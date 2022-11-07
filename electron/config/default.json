@@ -1,0 +1,27 @@
+{
+  "Environment": {
+    "name": "local",
+    "port": 8000,
+    "accessAllowedFrom": [
+      "*"
+    ],
+    "apiBaseUrl": "/test_companion/api/v1",
+    "serviceName": "test-companion-service",
+    "openEndpoints": [
+      "/healthcheck",
+      "/public",
+      "/webhooks"
+    ],
+    "lockedEndpoints": [
+      ""
+    ],
+    "internalApiKey": "b4567rt45",
+    "auditLogExcludedPaths": []
+  },
+  "Services": {},
+  "ErrorAlert": {
+    "recipients": [],
+    "source": "Error-Alert <DoNotReply@rptc.in>"
+  },
+  "Application": {}
+}

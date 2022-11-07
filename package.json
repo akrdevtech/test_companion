@@ -1,0 +1,43 @@
+{
+  "name": "test_companion",
+  "version": "1.0.0",
+  "description": "IELTS Test Companion APP.",
+  "main": "index.js",
+  "scripts": {
+    "dev:electron": "npm run build:electron && cd ./electron && npm start",
+    "build:fe": "cd ./frontend && npm run build",
+    "build:be": "cd ./backend && npm run build",
+    "build:electron": "cp -r backend/config electron",
+    "move:build:fe": "cp -r frontend/dist build",
+    "move:build:be": "mkdir build\\node_modules && cp -r backend/dist build/backend && cp -r node_modules build/node_modules",
+    "move:build:electron": "cp -r electron build/electron",
+    "prebuild:app": "npm run build:fe && npm run move:build:fe && npm run build:be && npm run move:build:be && npm run build:electron && npm run move:build:electron",
+    "package:win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "release:win": "npm run prebuild:app && npm run package:win"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akrdevtech/test_companion.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akrdevtech/test_companion/issues"
+  },
+  "homepage": "https://github.com/akrdevtech/test_companion#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^21.2.2",
+    "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "files": [
+      "build/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "test_companion",
+      "owner": "akhilkrishnanr"
+    }
+  }
+}
