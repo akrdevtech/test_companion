@@ -2,16 +2,16 @@
   "name": "test_companion",
   "version": "1.0.0",
   "description": "IELTS Test Companion APP.",
-  "main": "index.js",
+  "main": "build/electron/main.js",
   "scripts": {
-    "dev:electron": "npm run build:electron && cd ./electron && npm start",
+    "dev:electron": "npm run build:electron && electron .",
     "build:fe": "cd ./frontend && npm run build",
     "build:be": "cd ./backend && npm run build",
-    "build:electron": "cp -r backend/config electron",
+    "build:electron": "cp -r backend/config/* config",
     "move:build:fe": "cp -r frontend/dist build",
-    "move:build:be": "mkdir build\\node_modules && cp -r backend/dist build/backend && cp -r node_modules build/node_modules",
+    "move:build:be": "mkdir build\\node_modules && cp -r backend/dist build/backend && cp -r backend/node_modules/* build/node_modules",
     "move:build:electron": "cp -r electron build/electron",
-    "prebuild:app": "npm run build:fe && npm run move:build:fe && npm run build:be && npm run move:build:be && npm run build:electron && npm run move:build:electron",
+    "prebuild:app": "rm -r build && npm run build:fe && npm run move:build:fe && npm run build:be && npm run move:build:be && npm run build:electron && npm run move:build:electron",
     "package:win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
     "release:win": "npm run prebuild:app && npm run package:win"
   },
@@ -25,19 +25,34 @@
     "url": "https://github.com/akrdevtech/test_companion/issues"
   },
   "homepage": "https://github.com/akrdevtech/test_companion#readme",
-  "dependencies": {},
+  "dependencies": {
+    "config": "^3.3.8",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "moment-timezone": "^0.5.38",
+    "morgan": "^1.10.0",
+    "winston": "^3.8.2"
+  },
   "devDependencies": {
     "electron": "^21.2.2",
     "electron-builder": "^23.6.0"
   },
   "build": {
+    "productName": "TestCompanion",
+    "appId": "TestCompanion",
+    "asar": true,
     "files": [
-      "build/**/*"
+      "build/**/*",
+      "node_modules"
     ],
     "publish": {
       "provider": "github",
       "repo": "test_companion",
       "owner": "akhilkrishnanr"
-    }
+    },
+    "directories": {
+      "buildResources": "assets"
+    },
+    "extraResources": []
   }
 }
