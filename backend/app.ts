@@ -37,7 +37,6 @@ export class App {
         // Enable cors
         this.app.options('*', cors());
         this.app.use(cors(getCorsOptions(this.envConfig.accessAllowedFrom)));
-
         this.app.use(addTransactionId);
     }
 
@@ -48,7 +47,6 @@ export class App {
         });
         // error middleware
         this.app.use(errorHandler);
-
         logInfo('All middlewares added successfully to the express application');
     }
 

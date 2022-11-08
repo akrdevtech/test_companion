@@ -18,7 +18,14 @@
     "internalApiKey": "b4567rt45",
     "auditLogExcludedPaths": []
   },
-  "Services": {},
+  "Services": {
+    "dbService": {
+      "USER": "",
+      "PASSWORD": "",
+      "DB": "test_companion",
+      "HOST": "C:\\test_companion\\data.sqlite"
+    }
+  },
   "ErrorAlert": {
     "recipients": [],
     "source": "Error-Alert <DoNotReply@rptc.in>"

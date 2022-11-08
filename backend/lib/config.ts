@@ -21,16 +21,36 @@ export interface ILoggerConfig {
 
 export interface IAppConfig {
     envConfig: IEnvConfig;
+    dbConfig: ISQLiteConfig,
 }
 
 interface IConfigProperties {
     [key: string]: string;
 }
 
+export interface ISQLiteConfigOptions {
+    HOST: string;
+}
+
+export interface ISQLiteConfig {
+    USER: string;
+    PASSWORD: string;
+    DB: string;
+    OPTIONS: ISQLiteConfigOptions;
+}
 
 export class ConfigManager {
     private static isStringArray(array: Array<string>): boolean {
         return Array.isArray(array) && array.filter((item) => typeof item !== 'string').length === 0;
+    }
+
+    public static getDbConfig(): ISQLiteConfig {
+        const { USER, PASSWORD, DB, HOST } = config.get('Services.dbService') as IConfigProperties;
+        if (!DB || !HOST) {
+            throw new ConfigurationError('Please add all required configuration for the environment');
+        }
+        const dbConfig: ISQLiteConfig = { DB, USER, PASSWORD, OPTIONS: { HOST } };
+        return dbConfig;
     }
 
     public static getLoggerConfig(): ILoggerConfig {
@@ -91,6 +111,7 @@ export class ConfigManager {
         // All application configurations should go here
         return {
             envConfig: this.getEnvConfig() as IEnvConfig,
+            dbConfig: this.getDbConfig() as ISQLiteConfig,
         };
     }
 }
