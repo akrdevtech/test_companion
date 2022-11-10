@@ -1,4 +1,4 @@
-import { getAuditLogMiddleware as auditLog, getLogger, ILoggerConfig } from '../supportLibs/logger';
+import { getAuditLogMiddleware as auditLog, getLogger, ILoggerConfig } from '@akrdevtech/lib-audit-logger';
 import { ConfigManager } from '../config';
 
 const loggerConfig: ILoggerConfig = ConfigManager.getLoggerConfig();
@@ -20,4 +20,11 @@ export function logWarn(message: string): void {
 
 export function logDebug(message: string): void {
   logger.debug(message);
+}
+
+export const appLogger = {
+  logInfo,
+  logError,
+  logWarn,
+  logDebug,
 }

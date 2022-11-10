@@ -19,11 +19,11 @@
     "auditLogExcludedPaths": []
   },
   "Services": {
-    "dbService": {
-      "USER": "",
-      "PASSWORD": "",
-      "DB": "test_companion",
-      "HOST": "C:\\test_companion\\data.sqlite"
+    "mongo": {
+      "uri": "mongodb://localhost:27018/studycentre?retryWrites=true",
+      "dbName": "study-centre",
+      "ssl": false,
+      "logLevel": "info"
     }
   },
   "ErrorAlert": {

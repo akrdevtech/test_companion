@@ -5,18 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigManager = void 0;
 const config_1 = __importDefault(require("config"));
+const vendor_1 = require("./enums/vendor");
 const config_error_1 = require("./errors/config_error");
 class ConfigManager {
     static isStringArray(array) {
         return Array.isArray(array) && array.filter((item) => typeof item !== 'string').length === 0;
-    }
-    static getDbConfig() {
-        const { USER, PASSWORD, DB, HOST } = config_1.default.get('Services.dbService');
-        if (!DB || !HOST) {
-            throw new config_error_1.ConfigurationError('Please add all required configuration for the environment');
-        }
-        const dbConfig = { DB, USER, PASSWORD, OPTIONS: { HOST } };
-        return dbConfig;
     }
     static getLoggerConfig() {
         const auditLogExcludedPaths = config_1.default.get('Environment.auditLogExcludedPaths');
@@ -57,11 +50,28 @@ class ConfigManager {
         };
         return envConfig;
     }
+    static getVendorConfig(vendor) {
+        switch (vendor) {
+            case vendor_1.VENDOR.MONGO: {
+                const { uri, dbName, ssl = false, logLevel = 'info', } = config_1.default.get('Services.mongo');
+                if (!uri || !dbName || !logLevel) {
+                    throw new config_error_1.ConfigurationError(`Please add all required configuration for vendor: ${vendor}`);
+                }
+                const mongoConfig = {
+                    uri,
+                    dbName,
+                    ssl: Boolean(ssl),
+                    logLevel,
+                };
+                return mongoConfig;
+            }
+        }
+    }
     static getAppConfig() {
         // All application configurations should go here
         return {
             envConfig: this.getEnvConfig(),
-            dbConfig: this.getDbConfig(),
+            mongoConfig: this.getVendorConfig(vendor_1.VENDOR.MONGO),
         };
     }
 }

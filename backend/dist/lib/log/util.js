@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logDebug = exports.logWarn = exports.logError = exports.logInfo = exports.getAuditLogMiddleware = void 0;
-const logger_1 = require("../supportLibs/logger");
+exports.appLogger = exports.logDebug = exports.logWarn = exports.logError = exports.logInfo = exports.getAuditLogMiddleware = void 0;
+const lib_audit_logger_1 = require("@akrdevtech/lib-audit-logger");
 const config_1 = require("../config");
 const loggerConfig = config_1.ConfigManager.getLoggerConfig();
-const logger = (0, logger_1.getLogger)(loggerConfig);
-const getAuditLogMiddleware = () => (0, logger_1.getAuditLogMiddleware)(loggerConfig);
+const logger = (0, lib_audit_logger_1.getLogger)(loggerConfig);
+const getAuditLogMiddleware = () => (0, lib_audit_logger_1.getAuditLogMiddleware)(loggerConfig);
 exports.getAuditLogMiddleware = getAuditLogMiddleware;
 function logInfo(message, ...meta) {
     logger.info(message, meta);
@@ -23,4 +23,10 @@ function logDebug(message) {
     logger.debug(message);
 }
 exports.logDebug = logDebug;
+exports.appLogger = {
+    logInfo,
+    logError,
+    logWarn,
+    logDebug,
+};
 //# sourceMappingURL=util.js.map

@@ -1,5 +1,5 @@
-import { IDbCollections } from "../vendors/database/DbBase";
+import { appLogger } from "../log/util";
 
 export interface IAppFeatures {
-    DbCollections: IDbCollections
+    AppLoger: typeof appLogger
 }

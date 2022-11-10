@@ -1,5 +1,13 @@
 import config from 'config';
+import { VENDOR } from './enums/vendor';
 import { ConfigurationError } from './errors/config_error';
+
+export interface IMongoConfig {
+    uri: string;
+    dbName: string;
+    ssl: boolean;
+    logLevel: string;
+}
 
 export interface IEnvConfig {
     name: string;
@@ -21,36 +29,18 @@ export interface ILoggerConfig {
 
 export interface IAppConfig {
     envConfig: IEnvConfig;
-    dbConfig: ISQLiteConfig,
+    mongoConfig: IMongoConfig,
 }
 
 interface IConfigProperties {
     [key: string]: string;
 }
 
-export interface ISQLiteConfigOptions {
-    HOST: string;
-}
-
-export interface ISQLiteConfig {
-    USER: string;
-    PASSWORD: string;
-    DB: string;
-    OPTIONS: ISQLiteConfigOptions;
-}
+type TVendorConfig = IMongoConfig;
 
 export class ConfigManager {
     private static isStringArray(array: Array<string>): boolean {
         return Array.isArray(array) && array.filter((item) => typeof item !== 'string').length === 0;
-    }
-
-    public static getDbConfig(): ISQLiteConfig {
-        const { USER, PASSWORD, DB, HOST } = config.get('Services.dbService') as IConfigProperties;
-        if (!DB || !HOST) {
-            throw new ConfigurationError('Please add all required configuration for the environment');
-        }
-        const dbConfig: ISQLiteConfig = { DB, USER, PASSWORD, OPTIONS: { HOST } };
-        return dbConfig;
     }
 
     public static getLoggerConfig(): ILoggerConfig {
@@ -107,11 +97,35 @@ export class ConfigManager {
         return envConfig;
     }
 
+    private static getVendorConfig(vendor: VENDOR): TVendorConfig {
+        switch (vendor) {
+            case VENDOR.MONGO: {
+                const {
+                    uri,
+                    dbName,
+                    ssl = false,
+                    logLevel = 'info',
+                } = config.get('Services.mongo') as IConfigProperties;
+                if (!uri || !dbName || !logLevel) {
+                    throw new ConfigurationError(`Please add all required configuration for vendor: ${vendor}`);
+                }
+
+                const mongoConfig = {
+                    uri,
+                    dbName,
+                    ssl: Boolean(ssl),
+                    logLevel,
+                };
+
+                return mongoConfig;
+            }
+        }
+    }
     public static getAppConfig(): IAppConfig {
         // All application configurations should go here
         return {
             envConfig: this.getEnvConfig() as IEnvConfig,
-            dbConfig: this.getDbConfig() as ISQLiteConfig,
+            mongoConfig: this.getVendorConfig(VENDOR.MONGO) as IMongoConfig,
         };
     }
 }

@@ -16,11 +16,16 @@
       ""
     ],
     "internalApiKey": "b4567rt45",
-    "auditLogExcludedPaths": [
-      "/swagger"
-    ]
+    "auditLogExcludedPaths": []
   },
-  "Services": {},
+  "Services": {
+    "mongo": {
+      "uri": "mongodb://localhost:27018/studycentre?retryWrites=true",
+      "dbName": "study-centre",
+      "ssl": false,
+      "logLevel": "info"
+    }
+  },
   "ErrorAlert": {
     "recipients": [],
     "source": "Error-Alert <DoNotReply@rptc.in>"

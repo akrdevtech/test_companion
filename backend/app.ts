@@ -2,12 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import config from 'config';
 import { logInfo } from './lib/log/util';
-import { BaseController } from './lib/controllers/base_controller';
-import { IAppConfig, IEnvConfig } from './lib/config';
+import { BaseController } from './lib/controllers/BaseController';
+import { IAppConfig, IEnvConfig, IMongoConfig } from './lib/config';
 import { errorHandler } from './lib/middleware/intercepter/errorHandler';
 import { HttpStatusCode } from './lib/enums/httpStatusCode';
 import { IncomingMessage, Server } from 'http';
 import { addTransactionId } from './lib/middleware/tracing/transaction_middleware';
+import { BaseMongoClient } from '@akrdevtech/lib-mongodb-with-migrate';
 
 
 const getCorsOptions = (corsAllowedOrigins: string[]) => ({
@@ -24,12 +25,14 @@ export class App {
     public app: express.Application;
     public port: string;
     public envConfig: IEnvConfig;
+    private mongoConfig: IMongoConfig;
 
     constructor(controllers: Array<BaseController>, port: string, appConfig: IAppConfig) {
         logInfo('Initializing express application');
         this.app = express();
         this.port = port;
         this.envConfig = appConfig.envConfig;
+        this.mongoConfig = appConfig.mongoConfig;
         this.initializeMiddlewares();
         this.initializeControllers(controllers);
     }
@@ -50,13 +53,30 @@ export class App {
         logInfo('All middlewares added successfully to the express application');
     }
 
-    public initializeLocalApp(): Promise<Server> {
+    public async performMigrations(): Promise<void> {
+        const db = new BaseMongoClient({
+            uri: this.mongoConfig.uri,
+            dbName: this.mongoConfig.dbName,
+            ssl: this.mongoConfig.ssl,
+            logLevel: this.mongoConfig.logLevel,
+        });
+
+        logInfo('Starting database migrations...');
+        const migrated = await db.performMigrations();
+        if (Array.isArray(migrated) && migrated.length)
+            migrated.forEach((filename: string) => logInfo(`Migrated the migration file ${filename}`));
+        logInfo('Completed database migrations...');
+    }
+
+    public initializeApp(): Promise<Server> {
         this.app.get('/', (req, res) => res.status(HttpStatusCode.OK).send('Test Companion Service'));
-        return new Promise((resolve) => {
-            const server = this.app.listen(this.port, () => {
-                logInfo(`⚡️ Service started : ENVIRONMENT → ${config.get('Environment.name')}, PORT → ${this.port}`);
-                server.setTimeout(30000);
-                resolve(server);
+        return this.performMigrations().then(() => {
+            return new Promise((resolve) => {
+                const server = this.app.listen(this.port, () => {
+                    logInfo(`⚡️ Service started : ENVIRONMENT → ${config.get('Environment.name')}, PORT → ${this.port}`);
+                    server.setTimeout(30000);
+                    resolve(server);
+                });
             });
         });
     }
