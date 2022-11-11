@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, RequestHandler, Response } from 'express';
-import { IAppFeatures } from '../interfaces/AppFeatures';
+import { IAppFeatures } from '../interfaces/appFeatures';
 import { IAppConfig, IEnvConfig } from '../config';
 import { RequestValidationError } from '../errors/request_validation_error';
 import { logInfo } from '../log/util';

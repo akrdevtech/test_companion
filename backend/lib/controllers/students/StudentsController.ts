@@ -1,5 +1,5 @@
 import express from 'express';
-import { IAppFeatures } from '../../interfaces/AppFeatures';
+import { IAppFeatures } from '../../interfaces/appFeatures';
 import { IAppConfig } from '../../config';
 import { HttpStatusCode } from '../../enums/httpStatusCode';
 import { BaseController } from '../BaseController';

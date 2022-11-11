@@ -1,4 +1,4 @@
-import { IAppFeatures } from "../interfaces/AppFeatures";
+import { IAppFeatures } from "../interfaces/appFeatures";
 
 export abstract class BaseService {
     public appFeatures: IAppFeatures;

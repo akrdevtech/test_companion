@@ -3,11 +3,11 @@ import { Collection } from 'mongodb';
 import { DatabaseError } from '../../errors/db_error';
 import { BaseMongoClient, IDbPaginatedData } from './BaseMongoClient';
 import { IMongoConfig } from '../../config';
-import { IDbStudents } from '../../interfaces/Students';
-import { IAppFeatures } from '../../interfaces/AppFeatures';
+import { IStudentsModel } from '../../interfaces/students';
+import { IAppFeatures } from '../../interfaces/appFeatures';
 
 export interface IStudentsDbApi {
-    getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IDbStudents>>;
+    getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>>;
 }
 
 export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
@@ -23,7 +23,7 @@ export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
         return db.collection(DbCollection.STUDENTS);
     }
 
-    async getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IDbStudents>> {
+    async getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>> {
         this.appLogger.logInfo(`[Mongo Service] Fetching Category List`);
 
         const serviceCollection = await this.getServiceCollection();
