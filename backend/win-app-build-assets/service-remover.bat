@@ -1,5 +1,5 @@
 echo "################################################"
-echo "Adding Application as a service"
+echo "Removing Application service"
 echo "################################################"
 
 @echo off
@@ -34,11 +34,5 @@ echo "Removing existing service - started"
 call nssm.exe stop %ServiceName%
 call sc.exe delete %ServiceName%
 echo "Removing existing service - completed"
-
-echo "Starting Service creation"
-call nssm.exe set %ServiceName% AppDirectory %cd%
-call nssm.exe install %ServiceName% "%cd%/index.exe"
-call nssm start %ServiceName%
-echo "Completed Service creation"
 
 pause
