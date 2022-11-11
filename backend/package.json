@@ -9,7 +9,8 @@
     "build": "tsc --build tsconfig.json",
     "prestart": "npm run build",
     "start": "node .",
-    "start:local": "npm run build && env-cmd -f .env nodemon ."
+    "start:local": "npm run build && env-cmd -f .env nodemon .",
+    "win:build": "sh win-app-build.sh"
   },
   "keywords": [],
   "author": "",
