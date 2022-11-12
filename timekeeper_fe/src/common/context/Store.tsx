@@ -1,16 +1,16 @@
 import React, { createContext, useReducer, Dispatch, ReactNode } from 'react';
-import { AlertSeverity, AppPages } from '../enums/global';
+import { EAlertSeverity, EAppPages } from '../enums/global';
 import { IGobalState } from '../interface/global';
 import { GlobalActions } from './Actions';
 import { GlobalReducer } from './Reducers';
 
 const initialState: IGobalState = {
-    selectedPage: AppPages.DASHBOARD,
+    selectedPage: EAppPages.DASHBOARD,
     genericSnackBar: {
         open: false,
         duration: 3000,
         message: 'Done',
-        severity: AlertSeverity.SUCCESS,
+        severity: EAlertSeverity.SUCCESS,
         handleClose: () => { },
     }
 };

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { GlobalActionTypes } from '../../../context/Actions';
-import { GlobalContext } from "../../../context/Store";
-import GenericSnackBar from '../GenericSnackBar';
+import { GlobalActionTypes } from '../context/Actions';
+import { GlobalContext } from "../context/Store";
+import GenericSnackBar from './GenericSnackBar';
 
 const GlobalComponent = () => {
     const { state, dispatch } = useContext(GlobalContext);
@@ -11,15 +11,14 @@ const GlobalComponent = () => {
         dispatch({ type: GlobalActionTypes.GENERIC_SNACKBAR_CLOSE, payload: {} })
     }
 
-    const handleSnackBarOpen = () => {
-        dispatch({ type: GlobalActionTypes.GENERIC_SNACKBAR_OPEN, payload: {
-            message: "Did it"
-        } })
-    }
+    // const handleSnackBarOpen = () => {
+    //     dispatch({ type: GlobalActionTypes.GENERIC_SNACKBAR_OPEN, payload: {
+    //         message: "Did it"
+    //     } })
+    // }
 
     return (
         <>
-            <button onClick={() => handleSnackBarOpen()}>Open</button>
             <GenericSnackBar {...genericSnackBar} handleClose={handleSnackBarClose} />
         </>
     )

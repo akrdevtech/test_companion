@@ -1,7 +1,7 @@
 import { Alert, IconButton, Snackbar } from '@mui/material'
 import React from 'react'
 import CloseIcon from '@mui/icons-material/Close';
-import { IGenericSnackBar } from '../../../interface/global';
+import { IGenericSnackBar } from '../interface/global';
 
 const GenericSnackBar = ({ open, duration, handleClose, message, severity }: IGenericSnackBar) => {
     const action = (

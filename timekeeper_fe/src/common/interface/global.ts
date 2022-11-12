@@ -1,4 +1,4 @@
-import { AppPages } from "../enums/global";
+import { EAppPages } from "../enums/global";
 import { AlertColor } from '@mui/lab';
 
 export interface IGenericSnackBar {
@@ -8,8 +8,12 @@ export interface IGenericSnackBar {
     severity: AlertColor;
     handleClose: Function;
 }
-
 export interface IGobalState {
-    selectedPage: AppPages;
+    selectedPage: EAppPages;
     genericSnackBar: IGenericSnackBar;
+}
+export interface IListPagination {
+    page: number;
+    limit: number;
+    totalPages: number;
 }
