@@ -15,7 +15,7 @@ const PageHeader = (props: IPageHeaderProps) => {
     return (
         <Grid container direction="row">
             <Grid item xs={4}>
-                <Typography variant='h5'><b>{pageTitle}</b></Typography>
+                <Typography variant='h5' color='primary'><b>{pageTitle}</b></Typography>
             </Grid>
             <Grid item xs={8} sx={{ textAlign: "right" }}>
                 <Grid container direction="row" justifyContent="flex-end" alignItems="center" >

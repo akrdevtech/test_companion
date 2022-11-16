@@ -19,6 +19,7 @@ export default function BreadcrumbsNavigation(props: IBreadcrumbsNavigationProps
         <Breadcrumbs>
             {crumbs.map(crumb => (
                 <StyledBreadcrumb
+                    size='small'
                     key={crumb.label}
                     label={crumb.label}
                     icon={crumb.icon}

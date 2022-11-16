@@ -2,6 +2,7 @@ import { EStudentAdmissionFilter, EStudentDetailTabs, EStudentGraduationFilter, 
 import { IListPagination } from "./global";
 
 export interface IStudent {
+    _id: string;
     firstName: string;
 }
 
