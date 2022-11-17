@@ -1,4 +1,4 @@
-import { ECourseDetailTabs } from "../enums/course";
+import { ECourseDetailTabs, ECourseStatus } from "../enums/course";
 import { IListPagination } from "./global";
 import { IStudent } from "./student";
 
@@ -7,6 +7,10 @@ export interface ICourse {
     name: string;
 }
 
+export interface ICourseListFilters {
+    status?: ECourseStatus | null | undefined | 'any';
+    search?: string;
+}
 export interface ICourseState {
     coursesList: ICourse[];
     refreshCourseList: boolean;
@@ -21,5 +25,5 @@ export interface ICourseState {
         refreshStudentList: boolean;
         selectedStudentInCourseInfo: IStudent | null | undefined;
     }
-
+    appliedCourseListFilters: ICourseListFilters
 }

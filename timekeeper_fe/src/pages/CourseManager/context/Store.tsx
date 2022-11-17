@@ -1,10 +1,10 @@
 import React, { createContext, useReducer, Dispatch, ReactNode } from 'react';
-import { ECourseDetailTabs } from '../../../common/enums/course';
+import { ECourseDetailTabs, ECourseStatus } from '../../../common/enums/course';
 import { ICourseState } from '../../../common/interface/course';
 import { CourseActions } from './Actions';
 import { CourseReducer } from './Reducers';
 
-const initialState: ICourseState = {
+const InitialCourseState: ICourseState = {
     coursesList: [],
     refreshCourseList: false,
     selectedCourseId: null,
@@ -25,11 +25,15 @@ const initialState: ICourseState = {
         },
         refreshStudentList: false,
         selectedStudentInCourseInfo: null,
+    },
+    appliedCourseListFilters: {
+        search: "",
+        status: ECourseStatus.ACTIVE,
     }
 };
 
 const CourseContext = createContext<{ state: ICourseState; dispatch: Dispatch<CourseActions> }>({
-    state: initialState,
+    state: InitialCourseState,
     dispatch: () => null
 });
 
@@ -38,7 +42,7 @@ const mainReducer = (initialState: ICourseState, action: CourseActions) => Cours
 type AppProps = { children: ReactNode };
 
 const CourseStore = ({ children }: AppProps) => {
-    const [state, dispatch] = useReducer(mainReducer, initialState);
+    const [state, dispatch] = useReducer(mainReducer, InitialCourseState);
     return (
         <CourseContext.Provider value={{ state, dispatch }}>
             {children}
@@ -46,4 +50,4 @@ const CourseStore = ({ children }: AppProps) => {
     )
 }
 
-export { CourseStore, CourseContext };
+export { CourseStore, CourseContext, InitialCourseState };

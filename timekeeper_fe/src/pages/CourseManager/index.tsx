@@ -107,11 +107,11 @@ const CourseManager = () => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        {/* <CourseList
+                        <CourseList
                             coursesList={coursesList}
                             selectedCourseId={selectedCourseId}
                             handleSelectCourseId={handleSelectCourseId}
-                        /> */}
+                        />
                     </Grid>
                 </PageHeader>
             </Grid>

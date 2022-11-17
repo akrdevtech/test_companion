@@ -3,11 +3,14 @@ import { IconButton, Typography } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-
+export enum EPaginationPageChangeModes {
+    INC = 'inc',
+    DEC = 'dec',
+}
 interface IPaginationButtonsProps {
     currentPage: number;
     numberOfPages: number;
-    handlePageChange: (mode: string) => void;
+    handlePageChange: (mode: EPaginationPageChangeModes) => void;
 }
 
 const PaginationButtons = (props: IPaginationButtonsProps) => {
@@ -16,7 +19,7 @@ const PaginationButtons = (props: IPaginationButtonsProps) => {
         <>
             <IconButton
                 disabled={!currentPage} color='primary'
-                onClick={() => handlePageChange("dec")}
+                onClick={() => handlePageChange(EPaginationPageChangeModes.DEC)}
             >
                 <KeyboardArrowLeftIcon />
             </IconButton>
@@ -25,7 +28,7 @@ const PaginationButtons = (props: IPaginationButtonsProps) => {
             </Typography>
             <IconButton
                 disabled={!numberOfPages || currentPage + 1 === numberOfPages} color='primary'
-                onClick={() => handlePageChange("inc")}
+                onClick={() => handlePageChange(EPaginationPageChangeModes.INC)}
             >
                 <KeyboardArrowRightIcon />
             </IconButton>
