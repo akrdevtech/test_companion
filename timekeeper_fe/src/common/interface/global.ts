@@ -17,3 +17,7 @@ export interface IListPagination {
     limit: number;
     totalPages: number;
 }
+export interface IWizardFormFields<T> {
+    value?: T;
+    error?: string | null | undefined;
+}

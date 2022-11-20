@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, Dispatch, ReactNode } from 'react';
-import { ECourseDetailTabs, ECourseStatus } from '../../../common/enums/course';
+import { EStepperStepStatus } from '../../../common/components/VerticalLinearStepper/components/StepperStep';
+import { EAddCourseWizardTabs, ECourseDetailTabs, ECourseStatus } from '../../../common/enums/course';
 import { ICourseState } from '../../../common/interface/course';
 import { CourseActions } from './Actions';
 import { CourseReducer } from './Reducers';
@@ -9,7 +10,6 @@ const InitialCourseState: ICourseState = {
     refreshCourseList: false,
     selectedCourseId: null,
     selectedCourseInfo: null,
-    isAddCourseWizardOpen: false,
     courseListPagination: {
         page: 0,
         limit: 10,
@@ -29,7 +29,8 @@ const InitialCourseState: ICourseState = {
     appliedCourseListFilters: {
         search: "",
         status: ECourseStatus.ACTIVE,
-    }
+    },
+    isAddCourseWizardOpen: false,
 };
 
 const CourseContext = createContext<{ state: ICourseState; dispatch: Dispatch<CourseActions> }>({

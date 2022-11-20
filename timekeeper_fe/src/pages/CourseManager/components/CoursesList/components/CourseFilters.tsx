@@ -37,6 +37,7 @@ export default function CourseFilters() {
                 appliedCourseListFilters: thisState as ICourseListFilters,
             }
         })
+        setAnchorEl(null);
     }
 
     return (

@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import Fab from '@mui/material/Fab';
 import CourseListItem from './components/CourseListItem'
 import { Grid, useTheme } from '@mui/material'
-// import AppliedFiltersContainer from './components/AppliedFiltersContainer';
-// import FilterTray from './components/FilterTray';
 import NoSearchResults from '../../../../common/icons/placeholders/NoSearchResults';
 import AppliedCourseFilters from './components/AppliedCourseFilters';
+import FilledAddCourseIcon from '../../../../common/icons/custom/FilledAddCourseIcon';
+import { CourseContext } from '../../context/Store';
+import { CourseActionTypes } from '../../context/Actions';
 
 const CourseList = (props) => {
     const theme = useTheme()
 
     const { coursesList, selectedCourseId, handleSelectCourseId } = props;
+
+    const { state, dispatch } = useContext(CourseContext)
+
+    const handleAddStudentWizardOpen = () => {
+        console.log("opening");
+        dispatch({
+            type: CourseActionTypes.ADD_COURSE_WIZARD_OPEN,
+            payload: {}
+        })
+    }
     return (
-        <Grid container direction="row" justifyContent="center" alignItems="center">
+        <Grid container direction="row" justifyContent="center" alignItems="center" >
             <Grid item xs={12} lg={12} sx={{ paddingBottom: 2, marginTop: 2 }}>
                 <AppliedCourseFilters />
             </Grid>
@@ -39,6 +51,15 @@ const CourseList = (props) => {
                     }
                 </Grid>
             </Grid>
+            <Fab
+                color='primary'
+                size="large"
+                variant='circular'
+                sx={{ position: "absolute", bottom: theme.spacing(2), right: "33%", textAlign: 'center' }}
+                onClick={() => handleAddStudentWizardOpen()}
+            >
+                <FilledAddCourseIcon />
+            </Fab>
         </Grid>
     )
 }

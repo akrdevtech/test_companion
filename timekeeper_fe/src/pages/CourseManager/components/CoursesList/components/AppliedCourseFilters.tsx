@@ -32,14 +32,14 @@ const AppliedCourseFilters = () => {
     const handlePageChange = (mode: EPaginationPageChangeModes): void => {
         if (mode === EPaginationPageChangeModes.INC) {
             dispatch({
-                type: CourseActionTypes.STUDENT_LIST_PAGINATION_CHANGE,
+                type: CourseActionTypes.COURSE_LIST_PAGINATION_CHANGE,
                 payload: {
                     courseListPagination: { ...courseListPagination, page: courseListPagination.page + 1 },
                 }
             })
         } else {
             dispatch({
-                type: CourseActionTypes.STUDENT_LIST_PAGINATION_CHANGE,
+                type: CourseActionTypes.COURSE_LIST_PAGINATION_CHANGE,
                 payload: {
                     courseListPagination: { ...courseListPagination, page: courseListPagination.page - 1 },
                 }

@@ -22,3 +22,18 @@ export enum EAlertSeverity {
     WARNING = 'warning',
     SUCCESS = 'success',
 }
+export const ECustomJoiErrors = {
+    JoiStringValidationErrorMessages: {
+        'string.base': `should be a 'text'`,
+        'string.empty': `cannot be an empty`,
+        'string.min': `minimum length of {#limit}`,
+        'any.required': `required field`
+    },
+    JoiNumberValidationErrorMessages: {
+        'number.base': `should be a 'number'`,
+        'number.empty': `cannot be an empty`,
+        'number.min': `minimum length of {#limit}`,
+        'any.required': `required field`
+    }
+
+}

@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { IStudent } from '../../../../common/interface/student';
 // import FilterTray from './components/FilterTray';
 import Fab from '@mui/material/Fab';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AppliedStudentFilters from '../AppliedStudentFilters';
 import { AddStudentWizardContext } from '../AddStudentWizard/components/data/context/Store';
 import { AddStudentWizardActionTypes } from '../AddStudentWizard/components/data/context/Actions';
@@ -30,9 +30,6 @@ const StudentsList = (props: IStudentListProps) => {
 
     return (
         <Grid container direction="row" justifyContent="center" alignItems="center" >
-            {/* <Grid item xs={12} lg={12} sx={{ paddingBottom: 2 }}> */}
-            {/* <FilterTray /> */}
-            {/* </Grid> */}
             <Grid item xs={12} lg={12} sx={{ paddingBottom: 2, marginTop: 2 }}>
                 <AppliedStudentFilters />
             </Grid>
@@ -67,7 +64,7 @@ const StudentsList = (props: IStudentListProps) => {
                 sx={{ position: "absolute", bottom: theme.spacing(2), right: "33%", textAlign: 'right' }}
                 onClick={() => handleAddStudentWizardOpen()}
             >
-                <PersonAddAltIcon />
+                <PersonAddAlt1Icon />
             </Fab>
         </Grid>
     )

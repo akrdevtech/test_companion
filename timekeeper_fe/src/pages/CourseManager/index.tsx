@@ -9,12 +9,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import { CourseContext } from './context/Store';
 import PageHeader from '../../common/components/PageHeader';
 import { EPageTitles } from '../../common/enums/global';
+import { AddCourseWizardStore } from './components/AddCourseWizard/context/Store';
 
 const CourseManager = () => {
     const { state, dispatch } = useContext(CourseContext);
 
     const {
-        isAddCourseWizardOpen,
         coursesList,
         selectedCourseId,
         courseListPagination,
@@ -101,11 +101,6 @@ const CourseManager = () => {
         <Grid container direction="row">
             <Grid item xs={12} lg={8} sx={{ backgroundColor: "#F5F8FB", padding: 2, minHeight: window.innerHeight }}>
                 <PageHeader breadCrumbs={breadCrumbs} handleBreadCrumbsClick={() => { }} pageTitle={EPageTitles.COURSE} >
-                    <Grid item xs={12} sx={{ paddingBottom: 2, paddingTop: 2 }}>
-                        <Grid container direction="row" justifyContent="space-between" alignItems="center">
-
-                        </Grid>
-                    </Grid>
                     <Grid item xs={12}>
                         <CourseList
                             coursesList={coursesList}
@@ -122,11 +117,9 @@ const CourseManager = () => {
                     changeCourseDetailsActiveTab={changeCourseDetailsActiveTab}
                 /> */}
             </Grid>
-            {/* <AddCourseWizard
-                open={isAddCourseWizardOpen}
-                handleClose={closeAddCourseWizard}
-                handleCreateNewCourse={handleCreateNewCourse}
-            /> */}
+            <AddCourseWizardStore>
+                <AddCourseWizard />
+            </AddCourseWizardStore>
         </Grid>
     )
 }

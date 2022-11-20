@@ -12,10 +12,20 @@ export const CourseReducer = (state: ICourseState, action: CourseActions): ICour
                 ...state,
                 appliedCourseListFilters: action.payload.appliedCourseListFilters,
             }
-        case CourseActionTypes.STUDENT_LIST_PAGINATION_CHANGE:
+        case CourseActionTypes.COURSE_LIST_PAGINATION_CHANGE:
             return {
                 ...state,
                 courseListPagination: action.payload.courseListPagination,
+            }
+        case CourseActionTypes.ADD_COURSE_WIZARD_OPEN:
+            return {
+                ...state,
+                isAddCourseWizardOpen: true,
+            }
+        case CourseActionTypes.ADD_COURSE_WIZARD_CLOSE:
+            return {
+                ...state,
+                isAddCourseWizardOpen: false,
             }
         default:
             return state;
