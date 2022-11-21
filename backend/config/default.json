@@ -5,8 +5,8 @@
     "accessAllowedFrom": [
       "*"
     ],
-    "apiBaseUrl": "/test_companion/api/v1",
-    "serviceName": "test-companion-service",
+    "apiBaseUrl": "/study_centre/api/v1",
+    "serviceName": "study-centre-service",
     "openEndpoints": [
       "/healthcheck",
       "/public",
