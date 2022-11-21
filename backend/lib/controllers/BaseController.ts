@@ -46,7 +46,6 @@ export abstract class BaseController {
     (fn: RequestHandler) =>
       (req: Request, res: Response, next: NextFunction): Promise<any> => {
         logInfo(`[transactionId] ${req.txId}`);
-
         return Promise.resolve(fn(req, res, next)).catch(next);
       };
 
