@@ -7,7 +7,7 @@ import { IAppConfig, IEnvConfig, IMongoConfig } from './lib/config';
 import { errorHandler } from '@akrdevtech/lib-error-handler-middleware';
 import { HttpStatusCode } from './lib/enums/httpStatusCode';
 import { IncomingMessage, Server } from 'http';
-import { addTransactionId } from './lib/middleware/tracing/transaction_middleware';
+import { expressRequestId } from "@akrdevtech/lib-express-request-id";
 import { BaseMongoClient } from '@akrdevtech/lib-mongodb-with-migrate';
 
 
@@ -42,7 +42,7 @@ export class App {
         this.app.use(cors(getCorsOptions(this.envConfig.accessAllowedFrom)));
 
         // adding transaction id
-        this.app.use(addTransactionId);
+        this.app.use(expressRequestId());
         
         // Support for parsing application/json
         this.app.use(
