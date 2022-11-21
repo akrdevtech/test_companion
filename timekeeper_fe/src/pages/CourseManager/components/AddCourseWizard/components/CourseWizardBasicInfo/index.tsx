@@ -1,12 +1,12 @@
 import { Button, Grid, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
 import React, { useContext } from 'react'
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-// import courseApis from '../../../../../../api/courseServices';
 import AddStudentWizardSchemas from '../schema';
 import { EAddCourseWizardBasicInfoFields } from '../../../../../../common/enums/course';
 import { AddCourseWizardContext } from '../../context/Store';
 import { IAddCourseWizardActionTypes } from '../../context/Actions';
 import { IAddCourseWizardBasicInfo } from '../../../../../../common/interface/course';
+import courseServices from '../../../../../../api/services/courseServices';
 
 interface ICourseWizardBasicInfoProps {
   handleActiveTabChange: Function
@@ -18,6 +18,7 @@ const CourseWizardBasicInfo = (props: ICourseWizardBasicInfoProps) => {
 
   const { courseWizardFieldSchemas: { basicInfoSchema: basicInfoFieldSchemas }, basicInfoSchema } = AddStudentWizardSchemas;
   const {
+    forms,
     forms: {
       basicInfo
     },
@@ -87,6 +88,11 @@ const CourseWizardBasicInfo = (props: ICourseWizardBasicInfoProps) => {
     })
   }
 
+  const createCourse = () => {
+    courseServices.createCourse(forms).then(resp => {
+      console.log(resp)
+    })
+  }
 
   return (
     <Grid item xs={11}>
@@ -206,7 +212,7 @@ const CourseWizardBasicInfo = (props: ICourseWizardBasicInfoProps) => {
             <Button variant='contained' size='small'
               sx={{ minWidth: 100 }}
               disabled={hasErrors}
-            // onClick={() => createCourse()}
+              onClick={() => createCourse()}
             >
               Submit
             </Button>

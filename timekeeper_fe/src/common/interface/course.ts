@@ -4,8 +4,16 @@ import { IListPagination, IWizardFormFields } from "./global";
 import { IStudent } from "./student";
 
 export interface ICourse {
-    _id: string;
-    name: string;
+    _id?: string;
+    courseId: string;
+    courseName: string;
+    duration: number;
+    fee: number;
+    totalCredits: number;
+    minCredits: number;
+    status: ECourseStatus;
+    studentsAttending: number;
+    studentsGraduated: number;
 }
 
 export interface ICourseListFilters {

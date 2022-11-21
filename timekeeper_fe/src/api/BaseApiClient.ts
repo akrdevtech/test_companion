@@ -1,10 +1,9 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-
 export interface IBaseApiClientConfigs {
   baseUrl: string;
   apiKey?: string;
+  txId?: string;
 }
-
 export class BaseApiClient {
   private client: AxiosInstance;
 
@@ -15,22 +14,23 @@ export class BaseApiClient {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
         'x-api-key': params.apiKey,
+        'x-transaction-id': params.txId,
       },
     });
 
     this.client.interceptors.request.use(request => {
-      console.log(`[API BASE CLIENT] Starting Request ` + JSON.stringify(request));
+      // console.log(`[API BASE CLIENT] Starting Request ` + JSON.stringify(request));
       return request;
     });
 
     this.client.interceptors.response.use(response => {
-      console.log(
-        `[API BASE CLIENT] Response Received ` +
-        JSON.stringify({
-          status: response.status,
-          data: response.data,
-        }),
-      );
+      // console.log(
+      //   `[API BASE CLIENT] Response Received ` +
+      //   JSON.stringify({
+      //     status: response.status,
+      //     data: response.data,
+      //   }),
+      // );
       return response;
     });
   }
@@ -64,7 +64,6 @@ export class BaseApiClient {
     try {
       const { data } = await this.client.get<T>(url);
       if (!data) throw new Error(`Data not received`);
-      console.log(data);
       const responseBody: T = data;
       return responseBody;
     } catch (error) {
@@ -75,7 +74,6 @@ export class BaseApiClient {
   protected async postCall<T, R>(url: string, body: T): Promise<R | undefined> {
     try {
       const { data } = await this.client.post<T, AxiosResponse<R>>(url, body);
-      console.log(data);
       const responseBody: R = data;
       return responseBody;
     } catch (error) {
@@ -86,7 +84,6 @@ export class BaseApiClient {
   protected async putCall<T, R>(url: string, body: T): Promise<R | undefined> {
     try {
       const { data } = await this.client.put<T, AxiosResponse<R>>(url, body);
-      console.log(data);
       const responseBody: R = data;
       return responseBody;
     } catch (error) {
@@ -97,7 +94,6 @@ export class BaseApiClient {
   protected async patchCall<T, R>(url: string, body: T): Promise<R | undefined> {
     try {
       const { data } = await this.client.patch<T, AxiosResponse<R>>(url, body);
-      console.log(data);
       const responseBody: R = data;
       return responseBody;
     } catch (error) {
@@ -112,7 +108,6 @@ export class BaseApiClient {
         data: args,
       });
       if (!data) throw new Error(`Data not received`);
-      console.log(data);
       const responseBody: T = data;
       return responseBody;
     } catch (error) {
