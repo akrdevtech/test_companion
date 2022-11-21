@@ -1,8 +1,8 @@
 import { CourseStatus } from '../enums/course';
-import { ObjectId } from 'mongodb';
+import { ObjectId, Document } from 'mongodb';
 
-export interface ICourseModel {
-    _id?: string | ObjectId;
+export interface ICourseModel extends Document {
+    _id?: ObjectId;
     courseId: string;
     courseName: string;
     duration: number;

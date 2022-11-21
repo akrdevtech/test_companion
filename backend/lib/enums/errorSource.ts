@@ -1,10 +1,7 @@
-export enum ErrorSource {
-  INTERNAL = 'Internal',
-  VALIDATION = 'Validation',
-  CONFIGURATION = 'Configuration',
-  AWS = 'AWS',
-  DB = 'Database',
-  COGNITO = 'Cognito',
-  EVENT_BRIDGE = 'Event Bridge',
-  NOT_FOUND = 'Not Found',
-}
+import { ErrorSource as baseErrorSource } from '@akrdevtech/lib-error-handler-middleware'
+
+export const ErrorSource = {
+  ...baseErrorSource,
+} as const;
+
+type ErrorSource = typeof ErrorSource[keyof typeof ErrorSource];

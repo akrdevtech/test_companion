@@ -1,13 +1,7 @@
-export enum HttpStatusMessage {
-  OK = 'OK',
-  CREATED = 'CREATED',
-  ACCEPTED = 'ACCEPTED',
-  NO_CONTENT = 'NO_CONTENT',
-  BAD_REQUEST = 'BAD_REQUEST',
-  UNAUTHORIZED = 'UNAUTHORIZED',
-  FORBIDDEN = 'FORBIDDEN',
-  NOT_FOUND = 'NOT_FOUND',
-  METHOD_NOT_ALLOWED = 'METHOD_NOT_ALLOWED',
-  CONFLICT = 'CONFLICT',
-  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
-}
+import { HttpStatusMessage as baseHttpStatusMessage } from '@akrdevtech/lib-error-handler-middleware'
+
+export const HttpStatusMessage = {
+  ...baseHttpStatusMessage,
+} as const;
+
+type HttpStatusMessage = typeof HttpStatusMessage[keyof typeof HttpStatusMessage];

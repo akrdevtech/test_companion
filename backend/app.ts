@@ -4,7 +4,7 @@ import config from 'config';
 import { logInfo } from './lib/log/util';
 import { BaseController } from './lib/controllers/BaseController';
 import { IAppConfig, IEnvConfig, IMongoConfig } from './lib/config';
-import { errorHandler } from './lib/middleware/intercepter/errorHandler';
+import { errorHandler } from '@akrdevtech/lib-error-handler-middleware';
 import { HttpStatusCode } from './lib/enums/httpStatusCode';
 import { IncomingMessage, Server } from 'http';
 import { addTransactionId } from './lib/middleware/tracing/transaction_middleware';
@@ -40,7 +40,26 @@ export class App {
         // Enable cors
         this.app.options('*', cors());
         this.app.use(cors(getCorsOptions(this.envConfig.accessAllowedFrom)));
+
+        // adding transaction id
         this.app.use(addTransactionId);
+        
+        // Support for parsing application/json
+        this.app.use(
+            express.json({
+                limit: '5MB',
+                type: 'application/json',
+            }),
+        );
+
+        // Support for parsing application/x-www-form-urlencoded
+        this.app.use(
+            express.urlencoded({
+                extended: true,
+                parameterLimit: 5,
+                limit: '5MB',
+            }),
+        );
     }
 
     private initializeControllers(controllers: Array<BaseController>) {

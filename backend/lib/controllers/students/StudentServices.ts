@@ -13,7 +13,7 @@ export class StudentService extends BaseService implements IStudentService {
     private studentServicesDbApi: IStudentsDbApi;
 
     constructor(appConfig: IAppConfig, appFeatures?: IAppFeatures) {
-        super(appFeatures);
+        super(appFeatures, { moduleName: "Student Service" });
         this.studentServicesDbApi = new StudentsDbApi(appConfig.mongoConfig, appFeatures);
     }
 

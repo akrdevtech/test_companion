@@ -1,6 +1,7 @@
 import config from 'config';
 import { VENDOR } from './enums/vendor';
-import { ConfigurationError } from './errors/config_error';
+import AppErrors from './errors';
+const { ConfigurationError } = AppErrors;
 
 export interface IMongoConfig {
     uri: string;

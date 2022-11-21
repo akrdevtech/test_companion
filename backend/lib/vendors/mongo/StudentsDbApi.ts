@@ -1,11 +1,11 @@
 import { DbCollection } from '../../enums/dbCollection';
 import { Collection } from 'mongodb';
-import { DatabaseError } from '../../errors/db_error';
 import { BaseMongoClient, IDbPaginatedData } from './BaseMongoClient';
 import { IMongoConfig } from '../../config';
 import { IStudentsModel } from '../../interfaces/students';
 import { IAppFeatures } from '../../interfaces/appFeatures';
-
+import AppErrors from '../../errors';
+const { DatabaseError } = AppErrors;
 export interface IStudentsDbApi {
     getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>>;
 }
@@ -14,7 +14,7 @@ export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
     protected appLogger: IAppFeatures["AppLoger"];
 
     constructor(mongoConfig: IMongoConfig, appFeatures?: IAppFeatures) {
-        super(mongoConfig);
+        super(mongoConfig, appFeatures, { moduleName: 'Student DB' });
         this.appLogger = appFeatures.AppLoger;
     }
 

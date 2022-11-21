@@ -1,9 +1,9 @@
 import express, { NextFunction, Request, RequestHandler, Response } from 'express';
 import { IAppFeatures } from '../interfaces/appFeatures';
-import { IAppConfig, IEnvConfig } from '../config';
-import { RequestValidationError } from '../errors/request_validation_error';
+import { IAppConfig } from '../config';
 import { logInfo } from '../log/util';
 import { ITransactionLogger, TransactionLogger } from '../middleware/tracing/transaction_middleware';
+import { RequestValidator } from '@akrdevtech/lib-express-joi-validation-middleware';
 
 export interface IControllerOptions {
   basePath: string;
@@ -17,6 +17,13 @@ export abstract class BaseController {
   public basePath: string;
   protected appConfig: IAppConfig;
   protected transactionLogger: ITransactionLogger;
+  protected validator: RequestValidator;
+  protected validateAll;
+  protected validateBody;
+  protected validateCookies;
+  protected validateHeaders;
+  protected validateQuery;
+  protected validateParams;
 
   constructor(appConfig: IAppConfig, options: IControllerOptions, appFeatures?: IAppFeatures) {
     this.appConfig = appConfig;
@@ -25,6 +32,13 @@ export abstract class BaseController {
     this.appLogger = this.appFeatures.AppLoger;
     this.basePath = `${this.API_BASE_URL}${options.basePath}`;
     this.transactionLogger = new TransactionLogger(options.moduleName);
+    this.validator = new RequestValidator({ abortEarly: false });
+    this.validateAll = this.validator.validateAll;
+    this.validateBody = this.validator.validateBody;
+    this.validateCookies = this.validator.validateCookies;
+    this.validateHeaders = this.validator.validateHeaders;
+    this.validateQuery = this.validator.validateQuery;
+    this.validateParams = this.validator.validateParams;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -33,19 +47,10 @@ export abstract class BaseController {
       (req: Request, res: Response, next: NextFunction): Promise<any> => {
         logInfo(`[transactionId] ${req.txId}`);
 
-        this.validateRequest(req);
-
         return Promise.resolve(fn(req, res, next)).catch(next);
       };
 
   public abstract getBasePath(): string;
-
-  private validateRequest(request: express.Request): void {
-    const errors = null;
-    if (errors) {
-      throw new RequestValidationError(errors.array());
-    }
-  }
   /**
    *
    * @param response Express response object
