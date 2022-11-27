@@ -7,14 +7,18 @@ import { AddCourseWizardContext } from '../../context/Store';
 import { IAddCourseWizardActionTypes } from '../../context/Actions';
 import { IAddCourseWizardBasicInfo } from '../../../../../../common/interface/course';
 import courseServices from '../../../../../../services/courseServices';
+import { GlobalContext } from '../../../../../../common/context/Store';
+import { GlobalActionTypes } from '../../../../../../common/context/Actions';
+import { EAlertSeverity } from '../../../../../../common/enums/global';
 
 interface ICourseWizardBasicInfoProps {
   handleActiveTabChange: Function
+  handleCloseWizard: (activity?: boolean) => void
 }
 const CourseWizardBasicInfo = (props: ICourseWizardBasicInfoProps) => {
-
-  // const { handleActiveTabChange } = props;
+  const { handleCloseWizard } = props;
   const { state, dispatch } = useContext(AddCourseWizardContext)
+  const { state: globalState, dispatch: globalDispatch } = useContext(GlobalContext)
 
   const { courseWizardFieldSchemas: { basicInfoSchema: basicInfoFieldSchemas }, basicInfoSchema } = AddStudentWizardSchemas;
   const {
@@ -90,7 +94,21 @@ const CourseWizardBasicInfo = (props: ICourseWizardBasicInfoProps) => {
 
   const createCourse = () => {
     courseServices.createCourse(forms).then(resp => {
-      console.log(resp)
+      globalDispatch({
+        type: GlobalActionTypes.GENERIC_SNACKBAR_OPEN,
+        payload: {
+          message: "Course Created Successfully",
+        }
+      });
+      handleCloseWizard(true);
+    }).catch(err => {
+      globalDispatch({
+        type: GlobalActionTypes.GENERIC_SNACKBAR_OPEN,
+        payload: {
+          message: "Course Creation Failed",
+          severity: EAlertSeverity.ERROR,
+        }
+      })
     })
   }
 

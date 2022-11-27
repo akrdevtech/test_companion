@@ -1,3 +1,4 @@
+import { EAlertSeverity } from "../enums/global";
 import { IGobalState } from "../interface/global";
 import { GlobalActions, GlobalActionsPayload, GlobalActionTypes } from "./Actions";
 
@@ -17,6 +18,7 @@ export const GlobalReducer = (state: IGobalState, action: GlobalActions) => {
                     duration: action.payload.duration || state.genericSnackBar.duration,
                     message: action.payload.message || state.genericSnackBar.message,
                     handleClose: action.payload.handleClose || state.genericSnackBar.handleClose,
+                    severity: action.payload.severity || EAlertSeverity.SUCCESS,
                 }
             }
         case GlobalActionTypes.GENERIC_SNACKBAR_CLOSE:

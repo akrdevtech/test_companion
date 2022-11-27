@@ -20,12 +20,11 @@ const AddCourseWizard = () => {
 
     const { activeTab, verticalStepperSteps } = state;
 
-    const handleClose = (): void => {
-        console.log("closing");
-
+    const handleClose = (activity: boolean = false): void => {
+        console.log(`closing:${activity}`);
         courseDispatch({
             type: CourseActionTypes.ADD_COURSE_WIZARD_CLOSE,
-            payload: {}
+            payload: { refreshCourseList: activity }
         })
     }
 
@@ -52,7 +51,10 @@ const AddCourseWizard = () => {
     const getActiveTabComponent = () => {
         switch (activeTab) {
             case EAddCourseWizardTabs.BASIC_INFO:
-                return <CourseWizardBasicInfo handleActiveTabChange={handleActiveTabChange} />;
+                return <CourseWizardBasicInfo
+                    handleActiveTabChange={handleActiveTabChange}
+                    handleCloseWizard={handleClose}
+                />;
             default: return;
         }
     }
@@ -65,7 +67,7 @@ const AddCourseWizard = () => {
     }
     return (
         <Dialog open={isAddCourseWizardOpen} onClose={() => handleClose()} fullWidth maxWidth="lg" >
-            <Grid container direction="row" justifyContent="center" alignItems='center' sx={{ minHeight: 600, maxHeight:600 }}>
+            <Grid container direction="row" justifyContent="center" alignItems='center' sx={{ minHeight: 600, maxHeight: 600 }}>
                 <Grid item lg={4} sx={{ backgroundColor: "#fff" }}>
                     <VerticalLinearStepper
                         steps={verticalStepperSteps}

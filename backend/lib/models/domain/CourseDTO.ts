@@ -6,14 +6,22 @@ import { ICreateCourseRequestSchema } from "../rest/createCourse";
 export class CourseDTO {
     constructor() { }
     public fromCreateRequestToDb(raw: ICreateCourseRequestSchema): ICourseModel {
+        const {
+            courseId,
+            courseName,
+            duration,
+            fee,
+            minCredits,
+            totalCredits
+        } = raw;
         return {
-            courseId: raw.courseId,
-            courseName: raw.courseName,
-            duration: raw.duration || 0,
-            fee: raw.fee || 0,
-            minCredits: raw.minCredits || 0,
+            courseId,
+            courseName,
+            duration: duration ? Number(duration) : 0,
+            fee: fee ? Number(fee) : 0,
+            minCredits: minCredits ? Number(minCredits) : 0,
             status: CourseStatus.ACTIVE,
-            totalCredits: raw.totalCredits || 0,
+            totalCredits: totalCredits ? Number(totalCredits) : 0,
             studentsAttending: 0,
             studentsGraduated: 0
         }

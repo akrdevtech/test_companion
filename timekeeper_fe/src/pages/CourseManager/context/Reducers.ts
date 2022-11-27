@@ -33,6 +33,18 @@ export const CourseReducer = (state: ICourseState, action: CourseActions): ICour
             return {
                 ...state,
                 isAddCourseWizardOpen: false,
+                refreshCourseList: action.payload.refreshCourseList ?? false,
+            }
+        case CourseActionTypes.COURSE_LIST_SELECT_COURSE:
+            return {
+                ...state,
+                selectedCourseId: action.payload.selectedCourseId,
+                selectedCourseInfo: action.payload.selectedCourseInfo,
+            }
+        case CourseActionTypes.COURSE_LIST_REFRESH:
+            return {
+                ...state,
+                refreshCourseList: true,
             }
         default:
             return state;

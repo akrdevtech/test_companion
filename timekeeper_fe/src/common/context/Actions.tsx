@@ -1,4 +1,4 @@
-import { EAppPages } from "../enums/global";
+import { EAlertSeverity, EAppPages } from "../enums/global";
 import { ActionMap } from "../types/global";
 
 export type GlobalActions = ActionMap<GlobalActionsPayload>[keyof ActionMap<GlobalActionsPayload>];
@@ -14,6 +14,7 @@ export type GlobalActionsPayload = {
     [GlobalActionTypes.GENERIC_SNACKBAR_OPEN]: {
         duration?: number;
         message?: string;
+        severity?: EAlertSeverity;
         handleClose?: Function;
     };
     [GlobalActionTypes.GENERIC_SNACKBAR_CLOSE]: {};

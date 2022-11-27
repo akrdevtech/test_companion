@@ -28,20 +28,19 @@ const CourseManager = () => {
 
 
     const handleSelectCourseId = (thisCourseId: string): void => {
-        // const thisCourse = coursesList.find(stud => stud.id === thisCourseId);
-        // dispatch({
-        //     type: CourseActions.COURSES_LIST.SELECT_COURSE,
-        //     payload: {
-        //         selectedCourseId: thisCourseId,
-        //         selectedCourseInfo: thisCourse,
-        //         activeTabName: 'basic'
-        //     }
-        // });
+        const thisCourse = coursesList.find(thisCourse => thisCourse._id === thisCourseId);
+        dispatch({
+            type: CourseActionTypes.COURSE_LIST_SELECT_COURSE,
+            payload: {
+                selectedCourseId: thisCourseId,
+                selectedCourseInfo: thisCourse,
+            }
+        });
     }
 
     const getUpdatedCourseList = () => {
         courseServices.getPaginatedCourseList(courseListPagination, appliedCourseListFilters).then(paginatedCourseList => {
-            const { pagination, documents } = paginatedCourseList;            
+            const { pagination, documents } = paginatedCourseList;
             dispatch({
                 type: CourseActionTypes.COURSE_LIST_GET_UPDATED,
                 payload: {
@@ -57,39 +56,14 @@ const CourseManager = () => {
         // dispatch({ type: CourseActions.COURSE_DETAILS.CHANGE_TABS, payload: { activeTabName } });
     }
 
-    // const closeAddCourseWizard = () => {
-    //     dispatch({ type: CourseActions.COURSE_WIZARD.CLOSE });
-    // };
-    // const openAddCourseWizard = () => {
-    //     dispatch({ type: CourseActions.COURSE_WIZARD.OPEN });
-    // };
-
-    // const handleCreateNewCourse = (courseCreateParams) => {
-    //     const { page, limit } = courseListPagination;
-    //     courseApis.createNewCourse(courseCreateParams).then(res => {
-    //         if (!res.success) {
-    //             dispatch({ type: CourseActions.COURSE_WIZARD.ADD_COURSE.FAILURE });
-    //         }
-    //         courseApis.getCourseList(page, limit, appliedCourseListFilters).then(courseListData => {
-    //             const { count, rows } = courseListData
-    //             dispatch({
-    //                 type: CourseActions.COURSE_WIZARD.ADD_COURSE.SUCCESS,
-    //                 payload: {
-    //                     pagination: { page, limit, totalPages: Math.ceil(count / limit) },
-    //                     coursesList: rows,
-    //                 }
-    //             });
-    //         });
-    //     })
-    // }
-
     useEffect(() => {
         getUpdatedCourseList();
     }, [])
 
     useEffect(() => {
         getUpdatedCourseList();
-    }, [appliedCourseListFilters.search,appliedCourseListFilters.status, courseListPagination.page, refreshCourseList === true])
+    }, [appliedCourseListFilters.search, appliedCourseListFilters.status, courseListPagination.page, refreshCourseList === true])
+
 
     const breadCrumbs = [
         {

@@ -2,11 +2,18 @@ import { Card, Grid, Typography, CardHeader, useTheme, IconButton } from '@mui/m
 import React from 'react'
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleIcon from '@mui/icons-material/People';
+import { ICourse } from '../../../../../common/interface/course';
 
-const CourseListItem = (props) => {
+interface ICourseListItemProps {
+  courseInfo: ICourse;
+  selectedCourseId: string | null | undefined;
+  handleSelectCourseId: (thisCourseId: string) => void;
+}
+
+const CourseListItem = (props: ICourseListItemProps) => {
   const theme = useTheme();
   const { courseInfo, selectedCourseId, handleSelectCourseId } = props;
-  const isSelected = courseInfo.id === selectedCourseId;
+  const isSelected = courseInfo._id === selectedCourseId;
   const cardStyle = {
     minWidth: 275,
     boxShadow: "none",
@@ -15,7 +22,7 @@ const CourseListItem = (props) => {
     color: isSelected ? theme.palette.common.white : "textSecondary"
   }
   return (
-    <Card sx={cardStyle} onClick={() => handleSelectCourseId(courseInfo.id)}>
+    <Card sx={cardStyle} onClick={() => handleSelectCourseId(courseInfo._id ?? "")}>
       <Grid container justifyContent="space-between" alignItems="center" >
         <Grid item xs={12} lg={6} >
           <CardHeader
@@ -30,7 +37,7 @@ const CourseListItem = (props) => {
               <>
                 <IconButton><AccessTimeIcon sx={{ fontSize: 15, color: isSelected ? "white" : "textSecondary" }} /></IconButton>
                 <Typography variant='caption' color={isSelected ? "white" : "textSecondary"}>
-                  {parseFloat(Number(courseInfo.duration) / 28).toFixed(1)} Months
+                  {parseFloat(`${Number(courseInfo.duration) / 28}`).toFixed(1)} Months
                 </Typography>
               </>
             )}
