@@ -4,10 +4,12 @@ import { BaseService } from "../BaseService";
 import { IAppFeatures } from "../../interfaces/appFeatures";
 import { IDbPaginatedData } from "../../vendors/mongo/BaseMongoClient";
 import { ICourseModel } from "../../interfaces/course";
+import { CourseStatus } from "../../enums/course";
+import { IGetPaginatedCourseListFiltersSchema } from "../../models/rest/getPaginatedCourseList";
 
 export interface ICourseService {
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
-    getAllCourses(page: number, limit: number): Promise<IDbPaginatedData<ICourseModel>>
+    getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>>
 }
 
 export class CourseService extends BaseService implements ICourseService {
@@ -17,9 +19,9 @@ export class CourseService extends BaseService implements ICourseService {
         this.courseServicesDbApi = new CoursesDbApi(appConfig.mongoConfig, appFeatures);
     }
 
-    async getAllCourses(page: number, limit: number): Promise<IDbPaginatedData<ICourseModel>> {
+    async getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>> {
         this.logInfo(`Fetching Courses List`);
-        return this.courseServicesDbApi.getAllCourses(page, limit);
+        return this.courseServicesDbApi.getPaginatedCourseList(page, limit, filters);
     }
 
     async createCourse(courseData: ICourseModel): Promise<ICourseModel> {

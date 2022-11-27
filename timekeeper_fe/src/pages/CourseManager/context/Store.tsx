@@ -14,6 +14,7 @@ const InitialCourseState: ICourseState = {
         page: 0,
         limit: 10,
         totalPages: 0,
+        totalCount: 0,
     },
     courseDetailsActiveTab: ECourseDetailTabs.BASIC,
     courseDetailsStudents: {
@@ -22,6 +23,7 @@ const InitialCourseState: ICourseState = {
             page: 0,
             limit: 10,
             totalPages: 0,
+            totalCount: 0,
         },
         refreshStudentList: false,
         selectedStudentInCourseInfo: null,

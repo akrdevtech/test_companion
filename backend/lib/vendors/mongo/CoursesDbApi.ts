@@ -7,13 +7,14 @@ import { IAppFeatures } from '../../interfaces/appFeatures';
 import { ObjectId } from 'mongodb';
 import { InternalErrorMessages, InternalErrorStatusCodes } from '../../enums/errors';
 import Errors from '../../errors';
+import { CourseStatus } from '../../enums/course';
+import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/getPaginatedCourseList';
 const { DatabaseError, InternalError } = Errors;
 
 export interface ICoursesDbApi {
-    getAllCourses(page: number, limit: number): Promise<IDbPaginatedData<ICourseModel>>;
+    getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>>;
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
 }
-
 export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     protected appLogger: IAppFeatures["AppLoger"];
 
@@ -26,13 +27,24 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
         return db.collection(DbCollection.COURSES);
     }
 
-    async getAllCourses(page: number, limit: number): Promise<IDbPaginatedData<ICourseModel>> {
+
+    async getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>> {
         this.logInfo(`Fetching Course List`);
         const courseCollection = await this.getCourseCollection();
         try {
-            const query = {};
+            let query = {
+                status: filters.status,
+                $or: [{ courseId: new RegExp(filters.search, 'i') }, { courseName: new RegExp(filters.search, 'i') }],
+            };
+            if (!filters.search) {
+                delete query.$or
+            }
+            if (!filters.status) {
+                delete query.status
+            }
             const sort = "createdAt";
             const sortDirection = -1;
+
             return this.paginateFindQuery(courseCollection, query, sort, sortDirection, page, limit);
         } catch (error) {
             this.logError(JSON.stringify(error));

@@ -10,6 +10,8 @@ import { CourseContext } from './context/Store';
 import PageHeader from '../../common/components/PageHeader';
 import { EPageTitles } from '../../common/enums/global';
 import { AddCourseWizardStore } from './components/AddCourseWizard/context/Store';
+import courseServices from '../../services/courseServices';
+import { CourseActionTypes } from './context/Actions';
 
 const CourseManager = () => {
     const { state, dispatch } = useContext(CourseContext);
@@ -20,7 +22,8 @@ const CourseManager = () => {
         courseListPagination,
         refreshCourseList,
         selectedCourseInfo,
-        courseDetailsActiveTab
+        courseDetailsActiveTab,
+        appliedCourseListFilters
     } = state;
 
 
@@ -37,18 +40,17 @@ const CourseManager = () => {
     }
 
     const getUpdatedCourseList = () => {
-        // const { page, limit } = courseListPagination;
-        // courseApis.getCourseList(page, limit, appliedCourseListFilters).then(studentListData => {
-        //     const { count, rows } = studentListData
-        //     dispatch({
-        //         type: CourseActions.COURSES_LIST.GET_UPDATED,
-        //         payload: {
-        //             pagination: { page, limit, totalPages: Math.ceil(count / limit) },
-        //             coursesList: rows,
-        //             refreshCourseList: false,
-        //         }
-        //     });
-        // });
+        courseServices.getPaginatedCourseList(courseListPagination, appliedCourseListFilters).then(paginatedCourseList => {
+            const { pagination, documents } = paginatedCourseList;            
+            dispatch({
+                type: CourseActionTypes.COURSE_LIST_GET_UPDATED,
+                payload: {
+                    courseListPagination: pagination,
+                    coursesList: documents,
+                    refreshCourseList: false,
+                }
+            });
+        });
     }
 
     const changeCourseDetailsActiveTab = (activeTabName: string): void => {
@@ -81,14 +83,13 @@ const CourseManager = () => {
     //     })
     // }
 
-    // useEffect(() => {
-    //     getUpdatedCourseList();
-    // }, [])
+    useEffect(() => {
+        getUpdatedCourseList();
+    }, [])
 
-    // useEffect(() => {
-    //     setSearchText(appliedCourseListFilters.search)
-    //     getUpdatedCourseList();
-    // }, [appliedCourseListFilters.search, courseListPagination.page, refreshCourseList === true])
+    useEffect(() => {
+        getUpdatedCourseList();
+    }, [appliedCourseListFilters.search,appliedCourseListFilters.status, courseListPagination.page, refreshCourseList === true])
 
     const breadCrumbs = [
         {

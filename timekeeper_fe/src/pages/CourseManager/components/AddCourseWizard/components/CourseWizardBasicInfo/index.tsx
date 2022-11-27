@@ -6,7 +6,7 @@ import { EAddCourseWizardBasicInfoFields } from '../../../../../../common/enums/
 import { AddCourseWizardContext } from '../../context/Store';
 import { IAddCourseWizardActionTypes } from '../../context/Actions';
 import { IAddCourseWizardBasicInfo } from '../../../../../../common/interface/course';
-import courseServices from '../../../../../../api/services/courseServices';
+import courseServices from '../../../../../../services/courseServices';
 
 interface ICourseWizardBasicInfoProps {
   handleActiveTabChange: Function

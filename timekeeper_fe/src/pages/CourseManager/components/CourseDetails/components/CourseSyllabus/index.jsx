@@ -2,7 +2,7 @@ import { Button, Grid, IconButton, Menu, MenuItem, Paper, Typography } from '@mu
 import React, { useContext, useEffect } from 'react'
 import { CourseContext } from '../../../../Store'
 import CourseActions from '../../../../Actions';
-import syllabusApis from '../../../../../../api/syllabusServices';
+import syllabusApis from '../../../../../../services/syllabusServices';
 import SyllabusTree from './components/SyllabusTree';
 import EditIcon from '@mui/icons-material/Edit';
 import SyllabusEditor from './components/SyllabusEditor';

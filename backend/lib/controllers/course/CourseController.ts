@@ -6,8 +6,11 @@ import { BaseController } from '../BaseController';
 import { ICourseService, CourseService } from './CourseServices';
 import { createCourseValidationSchema } from '../../models/validators/course';
 import { CourseDTO } from '../../models/domain/CourseDTO';
-import { ICreateCourseRequestSchema } from '../../models/rest/course_post';
+import { ICreateCourseRequestSchema } from '../../models/rest/createCourse';
+import { CourseStatus } from '../../enums/course';
+import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/getPaginatedCourseList';
 
+interface IGetPaginatedCourseListRequestSchema { page: number, limit: number, search?: string, status?: CourseStatus }
 export class CoursesController extends BaseController {
   public basePath: string;
   public courseServices: ICourseService;
@@ -28,7 +31,7 @@ export class CoursesController extends BaseController {
   public intializeRoutes(): void {
     this.router.get(this.basePath, [
       this.transactionLogger.logTransaction(`Get All Courses`),
-      this.asyncHandler(this.getAllCourses)
+      this.asyncHandler(this.getPaginatedCourseList)
     ]);
     this.router.post(this.basePath, [
       this.transactionLogger.logTransaction(`Create New Course`),
@@ -37,14 +40,21 @@ export class CoursesController extends BaseController {
     ]);
   }
 
-  private getAllCourses = async (request: express.Request, response: express.Response, next: NextFunction) => {
-    const coursesList = await this.courseServices.getAllCourses(1, 10);
-    this.sendResponse(response, HttpStatusCode.OK, { status: 'ok', txId: request.txId, coursesList });
+  private getPaginatedCourseList = async (request: express.Request, response: express.Response, next: NextFunction) => {
+    const { page, limit, search, status }: IGetPaginatedCourseListRequestSchema = {
+      page: Number(request.query.page),
+      limit: Number(request.query.limit),
+      search: request.query.search as string,
+      status: request.query.status as CourseStatus,
+    };
+    const filters: IGetPaginatedCourseListFiltersSchema = { search, status };
+    const coursesList = await this.courseServices.getPaginatedCourseList(page, limit, filters);
+    this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, coursesList });
   };
 
   private createCourse = async (request: express.Request, response: express.Response, next: NextFunction) => {
     const createData: ICreateCourseRequestSchema = request.body;
     const courseData = await this.courseServices.createCourse(this.courseDTO.fromCreateRequestToDb(createData));
-    this.sendResponse(response, HttpStatusCode.OK, { status: 'ok', txId: request.txId, courseData });
+    this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, courseData });
   };
 }

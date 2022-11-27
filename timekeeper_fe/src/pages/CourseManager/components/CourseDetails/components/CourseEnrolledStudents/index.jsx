@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { CourseContext } from '../../../../Store'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PaginationButtons from '../../../../../../components/common/PaginationButtons';
-import studentApis from '../../../../../../api/studentServices';
+import studentApis from '../../../../../../services/studentServices';
 import CourseActions from '../../../../Actions';
 import CourseDeatilsStudentItem from './components/CourseDeatilsStudentItem';
 

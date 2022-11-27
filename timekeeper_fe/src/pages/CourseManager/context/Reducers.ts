@@ -12,6 +12,13 @@ export const CourseReducer = (state: ICourseState, action: CourseActions): ICour
                 ...state,
                 appliedCourseListFilters: action.payload.appliedCourseListFilters,
             }
+        case CourseActionTypes.COURSE_LIST_GET_UPDATED:
+            return {
+                ...state,
+                courseListPagination: action.payload.courseListPagination,
+                coursesList: action.payload.coursesList,
+                refreshCourseList: action.payload.refreshCourseList,
+            }
         case CourseActionTypes.COURSE_LIST_PAGINATION_CHANGE:
             return {
                 ...state,

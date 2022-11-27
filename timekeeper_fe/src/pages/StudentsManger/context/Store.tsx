@@ -31,6 +31,7 @@ const initialState: IStudentState = {
         page: 0,
         limit: 14,
         totalPages: 0,
+        totalCount: 0,
     },
     appliedStudentListFilters: {
         admission: EStudentAdmissionFilter.ACTIVE,

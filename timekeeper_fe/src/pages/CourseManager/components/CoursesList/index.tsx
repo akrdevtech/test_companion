@@ -7,13 +7,19 @@ import AppliedCourseFilters from './components/AppliedCourseFilters';
 import FilledAddCourseIcon from '../../../../common/icons/custom/FilledAddCourseIcon';
 import { CourseContext } from '../../context/Store';
 import { CourseActionTypes } from '../../context/Actions';
+import { ICourse } from '../../../../common/interface/course';
 
-const CourseList = (props) => {
+interface ICourseListProps {
+    coursesList: ICourse[];
+    selectedCourseId: string | null | undefined;
+    handleSelectCourseId: (thisCourseId: string) => void;
+}
+const CourseList = (props: ICourseListProps) => {
     const theme = useTheme()
 
     const { coursesList, selectedCourseId, handleSelectCourseId } = props;
 
-    const { state, dispatch } = useContext(CourseContext)
+    const { dispatch } = useContext(CourseContext)
 
     const handleAddStudentWizardOpen = () => {
         console.log("opening");
@@ -31,7 +37,7 @@ const CourseList = (props) => {
                 <Grid container spacing={2}>
                     {
                         coursesList.length ? (coursesList.map(courseInfo => (
-                            <Grid item xs={11} lg={6} key={courseInfo.id} >
+                            <Grid item xs={11} lg={6} key={courseInfo._id} >
                                 <CourseListItem
                                     courseInfo={courseInfo}
                                     selectedCourseId={selectedCourseId}

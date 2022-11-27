@@ -1,7 +1,7 @@
 import { CourseStatus } from "../../enums/course";
 import { ObjectId, Document } from 'mongodb';
 import { ICourseModel } from "../../interfaces/course";
-import { ICreateCourseRequestSchema } from "../rest/course_post";
+import { ICreateCourseRequestSchema } from "../rest/createCourse";
 
 export class CourseDTO {
     constructor() { }

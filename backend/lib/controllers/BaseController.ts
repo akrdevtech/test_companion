@@ -58,7 +58,7 @@ export abstract class BaseController {
    */
   protected sendResponse<T>(response: Response, status: number, data: T): void {
     if (status >= 400) response.status(status).send(data);
-    else response.status(status).send({ data });
+    else response.status(status).send(data);
   }
 
   protected getPagination(page?: number, limit?: number): { page: number; limit: number } {

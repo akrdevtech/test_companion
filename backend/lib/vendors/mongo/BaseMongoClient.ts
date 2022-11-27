@@ -54,7 +54,7 @@ export class BaseMongoClient extends MongoClient {
     const [documents, totalCount] = await Promise.all([
       cursor
         .sort(sort, sortDirection)
-        .skip((page - 1) * limit)
+        .skip((page) * limit)
         .limit(limit)
         .toArray(),
       collection.count(query),
