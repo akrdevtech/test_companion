@@ -12,4 +12,6 @@ export interface ICourseModel extends Document {
     status: CourseStatus;
     studentsAttending: number;
     studentsGraduated: number;
+    createdAt: Date;
+    updatedAt: Date;
 }

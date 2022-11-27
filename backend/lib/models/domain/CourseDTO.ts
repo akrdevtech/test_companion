@@ -14,6 +14,7 @@ export class CourseDTO {
             minCredits,
             totalCredits
         } = raw;
+        const today = new Date();
         return {
             courseId,
             courseName,
@@ -23,7 +24,9 @@ export class CourseDTO {
             status: CourseStatus.ACTIVE,
             totalCredits: totalCredits ? Number(totalCredits) : 0,
             studentsAttending: 0,
-            studentsGraduated: 0
+            studentsGraduated: 0,
+            createdAt: today,
+            updatedAt: today,
         }
     }
 }

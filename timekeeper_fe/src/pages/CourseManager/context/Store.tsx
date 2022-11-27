@@ -12,7 +12,7 @@ const InitialCourseState: ICourseState = {
     selectedCourseInfo: null,
     courseListPagination: {
         page: 0,
-        limit: 10,
+        limit: 12,
         totalPages: 0,
         totalCount: 0,
     },
