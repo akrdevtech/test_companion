@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Dialog, Grid, IconButton, } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import CourseWizardBasicInfo from './components/CourseWizardBasicInfo';
-import AddStudentWizardSchemas from "./components/schema";
+import AddCourseWizardSchemas from "./components/schema";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import VerticalLinearStepper from '../../../../common/components/VerticalLinearStepper';
 import { CourseContext } from '../../context/Store';

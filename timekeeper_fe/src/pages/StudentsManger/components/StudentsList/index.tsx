@@ -8,8 +8,8 @@ import { IStudent } from '../../../../common/interface/student';
 import Fab from '@mui/material/Fab';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AppliedStudentFilters from '../AppliedStudentFilters';
-import { AddStudentWizardContext } from '../AddStudentWizard/components/data/context/Store';
-import { AddStudentWizardActionTypes } from '../AddStudentWizard/components/data/context/Actions';
+import { AddStudentWizardContext } from '../AddStudentWizard/components/context/Store';
+import { AddStudentWizardActionTypes } from '../AddStudentWizard/components/context/Actions';
 
 interface IStudentListProps {
     studentsList?: IStudent[];

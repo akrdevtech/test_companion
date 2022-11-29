@@ -7,7 +7,7 @@ import PageHeader from '../../common/components/PageHeader'
 import { EPageTitles } from '../../common/enums/global';
 import { StudentContext } from './context/Store';
 import StudentsList from './components/StudentsList'
-import { AddStudentWizardStore } from './components/AddStudentWizard/components/data/context/Store';
+import { AddStudentWizardStore } from './components/AddStudentWizard/components/context/Store';
 import AddStudentWizard from './components/AddStudentWizard';
 // import StudentProfile from './components/StudentProfile'
 // import AddStudentWizard from './components/AddStudentWizard';

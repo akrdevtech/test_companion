@@ -14,8 +14,8 @@ const courseWizardFieldSchemas = {
     }
 }
 const basicInfoSchema = Joi.object(courseWizardFieldSchemas.basicInfoSchema);
-const AddStudentWizardSchemas = {
+const AddCourseWizardSchemas = {
     basicInfoSchema,
     courseWizardFieldSchemas,
 }
-export default AddStudentWizardSchemas
+export default AddCourseWizardSchemas

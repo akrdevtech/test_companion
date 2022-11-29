@@ -1,7 +1,7 @@
 import { Button, Grid, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material';
 import React, { useContext } from 'react'
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import AddStudentWizardSchemas from '../schema';
+import AddCourseWizardSchemas from '../schema';
 import { EAddCourseWizardBasicInfoFields } from '../../../../../../common/enums/course';
 import { AddCourseWizardContext } from '../../context/Store';
 import { IAddCourseWizardActionTypes } from '../../context/Actions';
@@ -20,7 +20,7 @@ const CourseWizardBasicInfo = (props: ICourseWizardBasicInfoProps) => {
   const { state, dispatch } = useContext(AddCourseWizardContext)
   const { state: globalState, dispatch: globalDispatch } = useContext(GlobalContext)
 
-  const { courseWizardFieldSchemas: { basicInfoSchema: basicInfoFieldSchemas }, basicInfoSchema } = AddStudentWizardSchemas;
+  const { courseWizardFieldSchemas: { basicInfoSchema: basicInfoFieldSchemas }, basicInfoSchema } = AddCourseWizardSchemas;
   const {
     forms,
     forms: {

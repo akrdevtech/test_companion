@@ -9,14 +9,22 @@ import CloseIcon from '@mui/icons-material/Close';
 // import AddStudentWizardSchemas from "./components/schema";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import VerticalLinearStepper from '../../../../common/components/VerticalLinearStepper';
-import { EAddStudentWizardTabs } from './components/data/enums';
-import { AddStudentWizardContext } from './components/data/context/Store';
-import { AddStudentWizardActionTypes } from './components/data/context/Actions';
+import { AddStudentWizardContext, initialAddStudentWizardState } from './components/context/Store';
+import { AddStudentWizardActionTypes } from './components/context/Actions';
+import { EAddStudentWizardTabs } from '../../../../common/enums/student';
+import StudentWizardBasicInfo from './components/StudentWizardBasicInfo';
+import StudentWizardContactInfo from './components/StudentWizardContactInfo';
+import StudentWizardCourseInfo from './components/StudentWizardCourseInfo';
+import StudentWizardGaurdianInfo from './components/StudentWizardGaurdianInfo';
+
+export interface IStudentWizardActiveTabCommonProps {
+    handleActiveTabChange?: (p: string) => void;
+}
 
 const AddStudentWizard = () => {
     // const { open, handleClose, handleCreateNewStudent } = props;
     const { state, dispatch } = useContext(AddStudentWizardContext);
-    const { verticalStepperSteps, activeTab, wizard } = state;
+    const { verticalStepperSteps, activeTab, isWizardOpen } = state;
 
     // const {
     //     stepperSteps: defaultSteps,
@@ -99,7 +107,7 @@ const AddStudentWizard = () => {
             });
             // setValidationErrors(currentValidationErrors);
             // setSteps(newSteps);
-        
+
 
             dispatch({
                 type: AddStudentWizardActionTypes.TAB_CHANGE,
@@ -111,56 +119,32 @@ const AddStudentWizard = () => {
         }
     }
 
-    // const handleResetData = () => {
-    //     setBasicInfo(basicInfoDefaultData);
-    //     setContactInfo(contactInfoDefaultData);
-    //     setCourseInfo(courseInfoDefaultData);
-    //     setGaurdianInfo(gaurdianInfoDefaultData);
-    //     setSteps(defaultSteps);
-    //     setActiveTab(defaultTabIds.BASIC_INFO);
-    // }
+    const handleResetData = () => {
+        dispatch({
+            type: AddStudentWizardActionTypes.WIZARD_RESET,
+            payload: {
+                initialState: { ...initialAddStudentWizardState },
+            }
+        })
+    }
 
     // const createStudent = () => {
     //     handleCreateNewStudent({ basicInfo, contactInfo, courseInfo, gaurdianInfo })
     // }
 
-    // const getActiveTabComponent = () => {
-    //     switch (activeTab) {
-    //         case defaultTabIds.BASIC_INFO:
-    //             return <WizardStudentBasicInfo
-    //                 handleActiveTabChange={handleActiveTabChange}
-    //                 basicInfo={basicInfo}
-    //                 setBasicInfo={setBasicInfo}
-    //                 errors={validationErrorsObject.basicInfo}
-    //             />;
-    //         case defaultTabIds.CONTACT_INFO:
-    //             return <WizardStudentContactInfo
-    //                 handleActiveTabChange={handleActiveTabChange}
-    //                 contactInfo={contactInfo}
-    //                 setContactInfo={setContactInfo}
-    //                 errors={validationErrorsObject.contactInfo}
-    //             />;
-    //         case defaultTabIds.COURSE_INFO:
-    //             return <WizardStudentCourseInfo
-    //                 handleActiveTabChange={handleActiveTabChange}
-    //                 courseInfo={courseInfo}
-    //                 setCourseInfo={setCourseInfo}
-    //                 errors={validationErrorsObject.courseInfo}
-    //                 activeTab={activeTab}
-    //             />;
-    //         case defaultTabIds.GAURDIAN_INFO:
-    //             return <WizardStudentGaurdianInfo
-    //                 handleActiveTabChange={handleActiveTabChange}
-    //                 gaurdianInfo={gaurdianInfo}
-    //                 setGaurdianInfo={setGaurdianInfo}
-    //                 handleValidateAll={handleValidateAll}
-    //                 createStudent={createStudent}
-    //                 hasVerified={hasVerified}
-    //                 errors={validationErrorsObject.gaurdianInfo}
-    //             />;
-    //         default: return;
-    //     }
-    // }
+    const getActiveTabComponent = (commonProps: IStudentWizardActiveTabCommonProps) => {
+        switch (activeTab) {
+            case EAddStudentWizardTabs.BASIC_INFO:
+                return <StudentWizardBasicInfo {...commonProps} />;
+            case EAddStudentWizardTabs.CONTACT_INFO:
+                return <StudentWizardContactInfo {...commonProps} />;
+            case EAddStudentWizardTabs.COURSE_INFO:
+                return <StudentWizardCourseInfo {...commonProps} />;
+            case EAddStudentWizardTabs.GAURDIAN_INFO:
+                return <StudentWizardGaurdianInfo {...commonProps} />;
+            default: return;
+        }
+    }
 
     const handleClose = () => {
         dispatch({
@@ -169,7 +153,7 @@ const AddStudentWizard = () => {
         })
     }
     return (
-        <Dialog open={wizard.open} onClose={() => handleClose()} fullWidth maxWidth="lg" >
+        <Dialog open={isWizardOpen} onClose={() => handleClose()} fullWidth maxWidth="lg" >
             <Grid container direction="row" justifyContent="center" alignItems='center' sx={{ minHeight: 600 }}>
                 <Grid item lg={4} sx={{ backgroundColor: "#fff" }}>
                     <VerticalLinearStepper
@@ -185,19 +169,20 @@ const AddStudentWizard = () => {
                             <IconButton
                                 sx={{ float: "right" }}
                                 color="error"
+                                size='small'
                                 onClick={() => handleClose()}
                             >
                                 <CloseIcon />
                             </IconButton>
                             <IconButton
                                 sx={{ float: "right" }}
-                                color="secondary"
-                            // onClick={handleResetData}
+                                size='small'
+                                onClick={() => handleResetData()}
                             >
                                 <RestartAltIcon />
                             </IconButton>
                         </Grid>
-                        {/* {getActiveTabComponent()} */}
+                        {getActiveTabComponent({ handleActiveTabChange })}
                     </Grid>
                 </Grid>
             </Grid>
