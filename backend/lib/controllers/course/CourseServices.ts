@@ -10,6 +10,7 @@ import { IGetPaginatedCourseListFiltersSchema } from "../../models/rest/getPagin
 export interface ICourseService {
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
     getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>>
+    getCourseMenuList(): Promise<Partial<ICourseModel>[]>;
 }
 
 export class CourseService extends BaseService implements ICourseService {
@@ -19,11 +20,14 @@ export class CourseService extends BaseService implements ICourseService {
         this.courseServicesDbApi = new CoursesDbApi(appConfig.mongoConfig, appFeatures);
     }
 
+    async getCourseMenuList(): Promise<Partial<ICourseModel>[]> {
+        this.logInfo(`Fetching Courses Menu List`);
+        return this.courseServicesDbApi.getCourseMenuList();
+    }
     async getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>> {
         this.logInfo(`Fetching Courses List`);
         return this.courseServicesDbApi.getPaginatedCourseList(page, limit, filters);
     }
-
     async createCourse(courseData: ICourseModel): Promise<ICourseModel> {
         this.logInfo(`Inserting Courses Data`);
         return this.courseServicesDbApi.createCourse(courseData);

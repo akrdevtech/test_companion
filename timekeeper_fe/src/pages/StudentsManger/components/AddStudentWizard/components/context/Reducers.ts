@@ -1,5 +1,14 @@
+import { EStepperStepStatus, IStepperStep } from "../../../../../../common/components/VerticalLinearStepper/components/StepperStep";
+import { EAddStudentWizardTabs } from "../../../../../../common/enums/student";
 import { IAddStudentWizardState } from "../../../../../../common/interface/student";
 import { AddStudentWizardActions, AddStudentWizardActionsPayload, AddStudentWizardActionTypes } from "./Actions";
+
+const getVerticalStepperStepStatus = (existingSteps: IStepperStep[], activeTabId: EAddStudentWizardTabs, hasErrors: boolean): IStepperStep[] => {
+    return existingSteps.map(step => {
+        if (step.tabId !== activeTabId) { return step; }
+        return { ...step, status: hasErrors ? EStepperStepStatus.ERROR : EStepperStepStatus.SUCCESS }
+    })
+}
 
 export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: AddStudentWizardActions): IAddStudentWizardState => {
     switch (action.type) {
@@ -35,7 +44,12 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.basicInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors
+                hasErrors: action.payload.hasErrors,
+                verticalStepperSteps: getVerticalStepperStepStatus(
+                    state.verticalStepperSteps,
+                    EAddStudentWizardTabs.BASIC_INFO,
+                    action.payload.hasErrors
+                ),
             }
         case AddStudentWizardActionTypes.CONTACT_INFO_CHANGE:
             return {
@@ -47,7 +61,12 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.contactInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors
+                hasErrors: action.payload.hasErrors,
+                verticalStepperSteps: getVerticalStepperStepStatus(
+                    state.verticalStepperSteps,
+                    EAddStudentWizardTabs.CONTACT_INFO,
+                    action.payload.hasErrors
+                ),
             }
         case AddStudentWizardActionTypes.COURSE_INFO_CHANGE:
             return {
@@ -59,7 +78,12 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.courseInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors
+                hasErrors: action.payload.hasErrors,
+                verticalStepperSteps: getVerticalStepperStepStatus(
+                    state.verticalStepperSteps,
+                    EAddStudentWizardTabs.COURSE_INFO,
+                    action.payload.hasErrors
+                ),
             }
         case AddStudentWizardActionTypes.GAURDIAN_INFO_CHANGE:
             return {
@@ -71,7 +95,12 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.gaurdianInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors
+                hasErrors: action.payload.hasErrors,
+                verticalStepperSteps: getVerticalStepperStepStatus(
+                    state.verticalStepperSteps,
+                    EAddStudentWizardTabs.GAURDIAN_INFO,
+                    action.payload.hasErrors
+                ),
             }
         default:
             return state;

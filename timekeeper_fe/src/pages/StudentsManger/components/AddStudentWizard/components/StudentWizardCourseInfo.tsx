@@ -1,5 +1,5 @@
 import { Button, Grid, IconButton, InputAdornment, MenuItem, TextField, Tooltip } from '@mui/material';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -7,9 +7,11 @@ import { useState } from 'react';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { AddStudentWizardContext } from './context/Store';
 import AddStudentWizardSchemas from './schemas';
-import { EAddStudentWizardCourseInfoFields } from '../../../../../common/enums/student';
+import { EAddStudentWizardCourseInfoFields, EAddStudentWizardTabs } from '../../../../../common/enums/student';
 import { AddStudentWizardActionTypes } from './context/Actions';
 import { IStudentWizardActiveTabCommonProps } from '..';
+import courseServices from '../../../../../services/courseServices';
+import { ICourse } from '../../../../../common/interface/course';
 
 const StudentWizardCourseInfo = (props: IStudentWizardActiveTabCommonProps) => {
 
@@ -20,7 +22,8 @@ const StudentWizardCourseInfo = (props: IStudentWizardActiveTabCommonProps) => {
         forms: {
             courseInfo
         },
-        hasErrors
+        hasErrors,
+        activeTab,
     } = state;
 
 
@@ -55,11 +58,15 @@ const StudentWizardCourseInfo = (props: IStudentWizardActiveTabCommonProps) => {
         })
     }
 
-    //   useEffect(() => {
-    //     courseApis.getAllActiveCoursesList().then(courseListData => {
-    //       setCourseList(courseListData);
-    //     })
-    //   }, [activeTab === AddStudentWizardData.tabIds.COURSE_INFO])
+    const initialCourseList: Partial<ICourse>[] = [];
+    const [courseList, setCourseList] = useState(initialCourseList);
+    useEffect(() => {
+        if (activeTab === EAddStudentWizardTabs.COURSE_INFO) {
+            courseServices.getCourseMenuList().then(courseListData => {
+                setCourseList(courseListData);
+            })
+        }
+    }, [activeTab])
 
     const handleGenerateAdmissionNumber = () => {
         //     studentApis.autogenerateAdmissionNumber(course, dateOfAdmission).then(autoAdmno => {
@@ -91,7 +98,11 @@ const StudentWizardCourseInfo = (props: IStudentWizardActiveTabCommonProps) => {
                             helperText={course.error || " "}
                         >
                             <MenuItem key={undefined} value={undefined}></MenuItem>
-                            {/* {courseList.map(cData => (<MenuItem key={cData.courseId} value={cData.courseId}>{cData.courseName}</MenuItem>))} */}
+                            {courseList.map(cData => (
+                                <MenuItem key={cData.courseId} value={cData.courseId}>
+                                    {cData.courseName}
+                                </MenuItem>
+                            ))}
                         </TextField>
                     </Grid>
                     <Grid item xs={12} lg={6}>
@@ -128,9 +139,11 @@ const StudentWizardCourseInfo = (props: IStudentWizardActiveTabCommonProps) => {
                             helperText={admissionNumber.error || " "}
                             InputProps={{
                                 endAdornment:
-                                    <InputAdornment position="start">
+                                    <InputAdornment position='end'>
                                         <Tooltip title="auto generate" placement="bottom">
-                                            <IconButton onClick={() => handleGenerateAdmissionNumber()}><AutoFixHighIcon /></IconButton>
+                                            <IconButton onClick={() => handleGenerateAdmissionNumber()} size='small' color='primary'>
+                                                <AutoFixHighIcon fontSize='small' />
+                                            </IconButton>
                                         </Tooltip>
                                     </InputAdornment>,
                             }}

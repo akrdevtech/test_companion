@@ -13,6 +13,7 @@ const { DatabaseError, InternalError } = Errors;
 
 export interface ICoursesDbApi {
     getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>>;
+    getCourseMenuList(): Promise<Partial<ICourseModel>[]>;
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
 }
 export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
@@ -28,6 +29,17 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     }
 
 
+    async getCourseMenuList(): Promise<Partial<ICourseModel>[]> {
+        this.logInfo(`Fetching Course Menu List`);
+        const courseCollection = await this.getCourseCollection();
+        const query = { status: CourseStatus.ACTIVE };
+        const record = await courseCollection.aggregate([
+            { $match: query },
+            { $project: { courseId: 1, courseName: 1 } },
+            { $sort: { courseName: 1 } }
+        ]).toArray();
+        return record as Partial<ICourseModel>[];
+    }
     async getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>> {
         this.logInfo(`Fetching Course List`);
         const courseCollection = await this.getCourseCollection();

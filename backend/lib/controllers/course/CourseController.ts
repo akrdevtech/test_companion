@@ -38,6 +38,15 @@ export class CoursesController extends BaseController {
       this.validateAll(createCourseValidationSchema),
       this.asyncHandler(this.createCourse),
     ]);
+    this.router.get(`${this.basePath}/menu`, [
+      this.transactionLogger.logTransaction(`Get Courses Menu List`),
+      this.asyncHandler(this.getCourseMenuList)
+    ]);
+  }
+
+  private getCourseMenuList = async (request: express.Request, response: express.Response, next: NextFunction) => {
+    const courseMenuList = await this.courseServices.getCourseMenuList();
+    this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, courseMenuList });
   }
 
   private getPaginatedCourseList = async (request: express.Request, response: express.Response, next: NextFunction) => {

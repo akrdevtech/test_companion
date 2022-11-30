@@ -15,9 +15,15 @@ const getPaginatedCourseList =
         return APIs.courseAPIs().getPaginatedCourseList(courseListPagination, appliedCourseListFilters);
     }
 
+const getCourseMenuList = (): Promise<Partial<ICourse>[]> => {
+    return APIs.courseAPIs().getCourseMenuList();
+}
+
+
 const courseServices = {
     createCourse,
     getPaginatedCourseList,
+    getCourseMenuList,
 }
 
 export default courseServices;

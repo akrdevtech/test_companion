@@ -2,6 +2,7 @@ import { ICourse, ICourseListFilters } from "../../common/interface/course";
 import { IListPagination } from "../../common/interface/global";
 import { IPaginatedData } from "../models/common/interfaces";
 import { ICreateCourseRequestSchema } from "../models/rest/course/createCourse";
+import { IGetCourseMenuListResponseSchema } from "../models/rest/course/getCourseMenuList";
 import { IGetPaginatedCourseListResponseSchema } from "../models/rest/course/getPaginatedCourseList";
 import { BaseApiClient, IBaseApiClientConfigs } from "./BaseApiClient";
 
@@ -33,5 +34,11 @@ export class CourseAPIs extends BaseApiClient {
     const responseData = await this.getCall<IGetPaginatedCourseListResponseSchema>(reqUrl);
     if (!responseData) throw new Error(`Error Fetching Bundle Details`);
     return responseData.coursesList;
+  }
+  async getCourseMenuList(): Promise<Partial<ICourse>[]> {
+    const reqUrl = `${this.basePath}/menu`;
+    const responseData = await this.getCall<IGetCourseMenuListResponseSchema>(reqUrl);
+    if (!responseData) throw new Error(`Error Fetching Bundle Details`);
+    return responseData.courseMenuList;
   }
 }
