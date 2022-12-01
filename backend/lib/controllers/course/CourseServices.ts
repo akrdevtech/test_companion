@@ -11,6 +11,8 @@ export interface ICourseService {
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
     getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>>
     getCourseMenuList(): Promise<Partial<ICourseModel>[]>;
+    getCourseByCourseId(courseId: string): Promise<ICourseModel>;
+    getNextCourseCode(): Promise<number>;
 }
 
 export class CourseService extends BaseService implements ICourseService {
@@ -19,10 +21,17 @@ export class CourseService extends BaseService implements ICourseService {
         super(appFeatures, { moduleName: "Course Service" });
         this.courseServicesDbApi = new CoursesDbApi(appConfig.mongoConfig, appFeatures);
     }
-
+    async getNextCourseCode(): Promise<number> {
+        this.logInfo(`Fetching Next Courses Code`);
+        return this.courseServicesDbApi.getNextCourseCode();
+    }
     async getCourseMenuList(): Promise<Partial<ICourseModel>[]> {
         this.logInfo(`Fetching Courses Menu List`);
         return this.courseServicesDbApi.getCourseMenuList();
+    }
+    async getCourseByCourseId(courseId: string): Promise<ICourseModel> {
+        this.logInfo(`Fetching Course Data for course id ${courseId}`);
+        return this.courseServicesDbApi.getCourseByCourseId(courseId);
     }
     async getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>> {
         this.logInfo(`Fetching Courses List`);

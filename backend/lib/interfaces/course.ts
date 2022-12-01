@@ -4,6 +4,7 @@ import { ObjectId, Document } from 'mongodb';
 export interface ICourseModel extends Document {
     _id?: ObjectId;
     courseId: string;
+    code: number;
     courseName: string;
     duration: number;
     fee: number;

@@ -12,6 +12,7 @@ const courseSchema_V1 = {
             required: ['courseId', 'courseName'],
             properties: {
                 courseId: { bsonType: 'string' },
+                code: { bsonType: 'number' },
                 courseName: { bsonType: 'string' },
                 duration: { bsonType: 'number' },
                 fee: { bsonType: 'number' },

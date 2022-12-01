@@ -1,4 +1,4 @@
-import express, { NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { IAppFeatures } from '../../interfaces/appFeatures';
 import { IAppConfig } from '../../config';
 import { HttpStatusCode } from '../../enums/httpStatusCode';
@@ -44,12 +44,12 @@ export class CoursesController extends BaseController {
     ]);
   }
 
-  private getCourseMenuList = async (request: express.Request, response: express.Response, next: NextFunction) => {
+  private getCourseMenuList = async (request: Request, response: Response, next: NextFunction) => {
     const courseMenuList = await this.courseServices.getCourseMenuList();
     this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, courseMenuList });
   }
 
-  private getPaginatedCourseList = async (request: express.Request, response: express.Response, next: NextFunction) => {
+  private getPaginatedCourseList = async (request: Request, response: Response, next: NextFunction) => {
     const { page, limit, search, status }: IGetPaginatedCourseListRequestSchema = {
       page: Number(request.query.page),
       limit: Number(request.query.limit),
@@ -61,9 +61,10 @@ export class CoursesController extends BaseController {
     this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, coursesList });
   };
 
-  private createCourse = async (request: express.Request, response: express.Response, next: NextFunction) => {
+  private createCourse = async (request: Request, response: Response, next: NextFunction) => {
     const createData: ICreateCourseRequestSchema = request.body;
-    const courseData = await this.courseServices.createCourse(this.courseDTO.fromCreateRequestToDb(createData));
+    const courseCode = await this.courseServices.getNextCourseCode();
+    const courseData = await this.courseServices.createCourse(this.courseDTO.fromCreateRequestToDb(createData,courseCode));
     this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, courseData });
   };
 }

@@ -5,16 +5,19 @@ import { IMongoConfig } from '../../config';
 import { ICourseModel } from '../../interfaces/course';
 import { IAppFeatures } from '../../interfaces/appFeatures';
 import { ObjectId } from 'mongodb';
-import { InternalErrorMessages, InternalErrorStatusCodes } from '../../enums/errors';
+import { InternalErrorMessages } from '../../enums/errors';
 import Errors from '../../errors';
 import { CourseStatus } from '../../enums/course';
 import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/getPaginatedCourseList';
+import { HttpStatusCode } from '@akrdevtech/lib-error-handler-middleware';
 const { DatabaseError, InternalError } = Errors;
 
 export interface ICoursesDbApi {
     getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>>;
     getCourseMenuList(): Promise<Partial<ICourseModel>[]>;
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
+    getCourseByCourseId(courseId: string): Promise<ICourseModel>;
+    getNextCourseCode(): Promise<number>;
 }
 export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     protected appLogger: IAppFeatures["AppLoger"];
@@ -28,6 +31,11 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
         return db.collection(DbCollection.COURSES);
     }
 
+    async getNextCourseCode(): Promise<number> {
+        const courseCollection = await this.getCourseCollection();
+        const response = await courseCollection.find().sort({ code: -1 }).limit(1).project({ code: 1 }) as Partial<ICourseModel>;
+        return response.code ? Number(response.code) + 1 : 1;
+    }
 
     async getCourseMenuList(): Promise<Partial<ICourseModel>[]> {
         this.logInfo(`Fetching Course Menu List`);
@@ -71,6 +79,13 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
         return record as ICourseModel;
     }
 
+    async getCourseByCourseId(courseId: string): Promise<ICourseModel> {
+        this.logInfo(`Fetching Course Data for course id ${courseId}`);
+        const courseCollection = await this.getCourseCollection();
+        const record = await courseCollection.findOne({ courseId });
+        return record as ICourseModel;
+    }
+
     async createCourse(courseData: ICourseModel): Promise<ICourseModel> {
         this.logInfo(`Creating new Course ${courseData.courseName}`);
         try {
@@ -80,7 +95,7 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
             if (id) {
                 return this.getCourseById(id);
             }
-            throw new InternalError(InternalErrorMessages.FailedToInsertCourse, InternalErrorStatusCodes.FailedToInsertCourse);
+            throw new InternalError(InternalErrorMessages.FailedToInsertCourse, HttpStatusCode.BAD_REQUEST);
         } catch (error) {
             this.logError(JSON.stringify(error));
             throw new DatabaseError(error.message, error.stack);

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 export interface ICourseEnrollmentsModel {
-    _id?: string | ObjectId;
+    _id?: ObjectId;
     courseId: string;
     year: number;
     month: number;

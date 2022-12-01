@@ -5,7 +5,7 @@ import { ICreateCourseRequestSchema } from "../rest/createCourse";
 
 export class CourseDTO {
     constructor() { }
-    public fromCreateRequestToDb(raw: ICreateCourseRequestSchema): ICourseModel {
+    public fromCreateRequestToDb(raw: ICreateCourseRequestSchema, courseCode: number): ICourseModel {
         const {
             courseId,
             courseName,
@@ -17,6 +17,7 @@ export class CourseDTO {
         const today = new Date();
         return {
             courseId,
+            code: courseCode,
             courseName,
             duration: duration ? Number(duration) : 0,
             fee: fee ? Number(fee) : 0,

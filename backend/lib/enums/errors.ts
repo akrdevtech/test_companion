@@ -1,7 +1,11 @@
 export enum InternalErrorStatusCodes {
-    FailedToInsertCourse = 1001
+    FailedToFindCourse = 1001,
+    FailedToInsertCourse = 1002,
+    FailedToInsertCourseEnrollments = 1003
 }
 
 export enum InternalErrorMessages {
-    FailedToInsertCourse = "Failed to insert new course to DB"
+    FailedToFindCourse = "Failed to find course",
+    FailedToInsertCourse = "Failed to insert new course to DB",
+    FailedToInsertCourseEnrollments = "Failed to insert new course enrollment to DB",
 }
