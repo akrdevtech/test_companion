@@ -41,4 +41,10 @@ export class CourseAPIs extends BaseApiClient {
     if (!responseData) throw new Error(`Error Fetching Bundle Details`);
     return responseData.courseMenuList;
   }
+  async getNextCourseCode(): Promise<string> {
+    const reqUrl = `${this.basePath}/autogen`
+    const responseData = await this.getCall<any>(reqUrl);
+    if (!responseData) throw new Error(`Error Fetching Bundle Details`);
+    return responseData.courseCode;
+  }
 }

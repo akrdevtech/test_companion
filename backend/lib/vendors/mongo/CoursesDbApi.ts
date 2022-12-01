@@ -32,9 +32,10 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     }
 
     async getNextCourseCode(): Promise<number> {
+        this.logInfo(`Fetching Next Course Code`);
         const courseCollection = await this.getCourseCollection();
-        const response = await courseCollection.find().sort({ code: -1 }).limit(1).project({ code: 1 }) as Partial<ICourseModel>;
-        return response.code ? Number(response.code) + 1 : 1;
+        const response = await courseCollection.find().sort({ code: -1 }).limit(1).toArray() as Partial<ICourseModel>[];
+        return response?.[0]?.code ? Number(response?.[0]?.code) + 1 : 1;
     }
 
     async getCourseMenuList(): Promise<Partial<ICourseModel>[]> {

@@ -18,12 +18,15 @@ const getPaginatedCourseList =
 const getCourseMenuList = (): Promise<Partial<ICourse>[]> => {
     return APIs.courseAPIs().getCourseMenuList();
 }
-
+const getNextCourseCode = (): Promise<string> => {
+    return APIs.courseAPIs().getNextCourseCode();
+}
 
 const courseServices = {
     createCourse,
     getPaginatedCourseList,
     getCourseMenuList,
+    getNextCourseCode,
 }
 
 export default courseServices;

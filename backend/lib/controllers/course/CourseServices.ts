@@ -13,6 +13,7 @@ export interface ICourseService {
     getCourseMenuList(): Promise<Partial<ICourseModel>[]>;
     getCourseByCourseId(courseId: string): Promise<ICourseModel>;
     getNextCourseCode(): Promise<number>;
+    generateCode(prefix: string, index: number): string;
 }
 
 export class CourseService extends BaseService implements ICourseService {
@@ -20,6 +21,11 @@ export class CourseService extends BaseService implements ICourseService {
     constructor(appConfig: IAppConfig, appFeatures?: IAppFeatures) {
         super(appFeatures, { moduleName: "Course Service" });
         this.courseServicesDbApi = new CoursesDbApi(appConfig.mongoConfig, appFeatures);
+    }
+    generateCode(prefix: string, index: number): string {
+        if (index < 10) return `${prefix}-00${index}`;
+        if (index < 100) return `${prefix}-0${index}`;
+        return `${prefix}-${index}`;
     }
     async getNextCourseCode(): Promise<number> {
         this.logInfo(`Fetching Next Courses Code`);
