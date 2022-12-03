@@ -159,13 +159,13 @@ const StudentWizardCourseInfo = (props: IStudentWizardActiveTabCommonProps) => {
                 }}>
                     <Button variant='outlined' size='small'
                         sx={{ minWidth: 100, margin: 2 }}
-                    // onClick={() => handleActiveTabChange("contactInfo")}
+                        onClick={() => handleActiveTabChange(EAddStudentWizardTabs.CONTACT_INFO)}
                     >
                         Back
                     </Button>
                     <Button variant='contained' size='small'
                         sx={{ minWidth: 100 }}
-                    // onClick={() => handleActiveTabChange("gaurdianInfo")}
+                        onClick={() => handleActiveTabChange(EAddStudentWizardTabs.GAURDIAN_INFO)}
                     >
                         Next
                     </Button>

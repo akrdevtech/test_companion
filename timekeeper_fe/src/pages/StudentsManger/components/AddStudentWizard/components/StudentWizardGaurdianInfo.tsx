@@ -1,14 +1,14 @@
 import { Button, Grid, TextField } from '@mui/material';
 import React, { useContext } from 'react'
 import { IStudentWizardActiveTabCommonProps } from '..';
-import { EAddStudentWizardGaurdianInfoFields } from '../../../../../common/enums/student';
+import { EAddStudentWizardGaurdianInfoFields, EAddStudentWizardTabs } from '../../../../../common/enums/student';
 import { AddStudentWizardActionTypes } from './context/Actions';
 import { AddStudentWizardContext } from './context/Store';
 import AddStudentWizardSchemas from './schemas';
 
 const StudentWizardGaurdianInfo = (props: IStudentWizardActiveTabCommonProps) => {
 
-    const { handleActiveTabChange } = props;
+    const { handleActiveTabChange, validateAll } = props;
 
     const { state, dispatch } = useContext(AddStudentWizardContext);
     const {
@@ -94,14 +94,14 @@ const StudentWizardGaurdianInfo = (props: IStudentWizardActiveTabCommonProps) =>
                     <Button
                         variant='outlined' size='small'
                         sx={{ minWidth: 100, margin: 2 }}
-                    // onClick={() => handleActiveTabChange("courseInfo")}
+                        onClick={() => handleActiveTabChange(EAddStudentWizardTabs.COURSE_INFO)}
                     >
                         Back
                     </Button>
                     {hasErrors ? (
                         <Button variant='outlined' size='small'
                             sx={{ minWidth: 100 }}
-                        // onClick={() => handleValidateAll()}
+                            onClick={() => validateAll()}
                         >
                             Validate
                         </Button>

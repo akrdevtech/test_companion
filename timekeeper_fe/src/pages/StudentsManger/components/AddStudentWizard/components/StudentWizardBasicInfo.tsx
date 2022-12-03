@@ -4,15 +4,15 @@ import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AddStudentWizardContext } from './context/Store';
-import { EAddStudentWizardBasicInfoFields } from '../../../../../common/enums/student';
+import { EAddStudentWizardBasicInfoFields, EAddStudentWizardTabs } from '../../../../../common/enums/student';
 import { AddStudentWizardActionTypes } from './context/Actions';
 import AddStudentWizardSchemas from './schemas';
+import { IStudentWizardActiveTabCommonProps } from '..';
 
 
-interface IStudentWizardBasicInfoProps {
-    handleActiveTabChange?: (p: string) => void;
-}
-const StudentWizardBasicInfo = (props: IStudentWizardBasicInfoProps) => {
+const StudentWizardBasicInfo = (props: IStudentWizardActiveTabCommonProps) => {
+
+    const { handleActiveTabChange } = props;
 
     const { state, dispatch } = useContext(AddStudentWizardContext);
     const {
@@ -139,13 +139,12 @@ const StudentWizardBasicInfo = (props: IStudentWizardBasicInfoProps) => {
                         disabled
                         variant='outlined' size='small'
                         sx={{ minWidth: 100, margin: 2 }}
-                    // onClick={() => handleActiveTabChange("basicInfo")}
                     >
                         Back
                     </Button>
                     <Button variant='contained' size='small'
                         sx={{ minWidth: 100 }}
-                    // onClick={() => handleActiveTabChange("contactInfo")}
+                        onClick={() => handleActiveTabChange(EAddStudentWizardTabs.CONTACT_INFO)}
                     >
                         Next
                     </Button>

@@ -1,14 +1,14 @@
 import { Button, Grid, TextField } from '@mui/material';
 import React, { useContext } from 'react'
-import { EAddStudentWizardContactInfoFields } from '../../../../../common/enums/student';
+import { IStudentWizardActiveTabCommonProps } from '..';
+import { EAddStudentWizardContactInfoFields, EAddStudentWizardTabs } from '../../../../../common/enums/student';
 import { AddStudentWizardActionTypes } from './context/Actions';
 import { AddStudentWizardContext } from './context/Store';
 import AddStudentWizardSchemas from './schemas';
 
-interface IStudentWizardContactInfoProps {
-    handleActiveTabChange?: (p: string) => void;
-}
-const StudentWizardContactInfo = (props: IStudentWizardContactInfoProps) => {
+const StudentWizardContactInfo = (props: IStudentWizardActiveTabCommonProps) => {
+
+    const { handleActiveTabChange } = props;
     const { state, dispatch } = useContext(AddStudentWizardContext);
     const {
         forms: {
@@ -131,13 +131,13 @@ const StudentWizardContactInfo = (props: IStudentWizardContactInfoProps) => {
                     <Button
                         variant='outlined' size='small'
                         sx={{ minWidth: 100, margin: 2 }}
-                    // onClick={() => handleActiveTabChange("basicInfo")}
+                        onClick={() => handleActiveTabChange(EAddStudentWizardTabs.BASIC_INFO)}
                     >
                         Back
                     </Button>
                     <Button variant='contained' size='small'
                         sx={{ minWidth: 100 }}
-                    // onClick={() => handleActiveTabChange("courseInfo")}
+                        onClick={() => handleActiveTabChange(EAddStudentWizardTabs.COURSE_INFO)}
                     >
                         Next
                     </Button>

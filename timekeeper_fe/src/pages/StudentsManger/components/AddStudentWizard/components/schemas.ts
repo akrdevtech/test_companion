@@ -1,8 +1,13 @@
 import Joi from "joi";
 import { ECustomJoiErrors } from "../../../../../common/enums/global";
 import { EAddStudentWizardBasicInfoFields, EAddStudentWizardContactInfoFields, EAddStudentWizardCourseInfoFields, EAddStudentWizardGaurdianInfoFields } from "../../../../../common/enums/student";
-const { JoiStringValidationErrorMessages, JoiNumberValidationErrorMessages } = ECustomJoiErrors;
+const { JoiStringValidationErrorMessages } = ECustomJoiErrors;
 
+
+export type TBasicInfoValidatorSchema = typeof studentWizardFieldSchemas.basicInfoSchema;
+export type TCourseInfoValidatorSchema = typeof studentWizardFieldSchemas.courseInfoSchema;
+export type TContactInfoValidatorSchema = typeof studentWizardFieldSchemas.contactInfoSchema;
+export type TGaurdianInfoValidatorSchema = typeof studentWizardFieldSchemas.gaurdianInfoSchema;
 
 const studentWizardFieldSchemas = {
     basicInfoSchema: {

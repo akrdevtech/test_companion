@@ -32,6 +32,7 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                 ...state,
                 activeTab: action.payload.activeTab,
                 verticalStepperSteps: action.payload.verticalStepperSteps,
+                forms: action.payload.forms,
             }
         }
         case AddStudentWizardActionTypes.BASIC_INFO_CHANGE:
@@ -44,7 +45,7 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.basicInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors,
+                hasErrors: true,
                 verticalStepperSteps: getVerticalStepperStepStatus(
                     state.verticalStepperSteps,
                     EAddStudentWizardTabs.BASIC_INFO,
@@ -61,7 +62,7 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.contactInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors,
+                hasErrors: true,
                 verticalStepperSteps: getVerticalStepperStepStatus(
                     state.verticalStepperSteps,
                     EAddStudentWizardTabs.CONTACT_INFO,
@@ -78,7 +79,7 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.courseInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors,
+                hasErrors: true,
                 verticalStepperSteps: getVerticalStepperStepStatus(
                     state.verticalStepperSteps,
                     EAddStudentWizardTabs.COURSE_INFO,
@@ -95,12 +96,19 @@ export const AddStudentWizardReducer = (state: IAddStudentWizardState, action: A
                         ...action.payload.gaurdianInfo,
                     }
                 },
-                hasErrors: action.payload.hasErrors,
+                hasErrors: true,
                 verticalStepperSteps: getVerticalStepperStepStatus(
                     state.verticalStepperSteps,
                     EAddStudentWizardTabs.GAURDIAN_INFO,
                     action.payload.hasErrors
                 ),
+            }
+        case AddStudentWizardActionTypes.WIZARD_VALIDATE_ALL:
+            return {
+                ...state,
+                forms: action.payload.forms,
+                hasErrors: action.payload.hasErrors,
+                verticalStepperSteps: action.payload.verticalStepperSteps,
             }
         default:
             return state;

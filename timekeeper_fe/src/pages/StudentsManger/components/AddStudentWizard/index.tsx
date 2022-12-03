@@ -1,119 +1,164 @@
 import React, { useContext } from 'react'
 import { Dialog, Grid, IconButton, } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-// import WizardStudentContactInfo from './components/WizardStudentContactInfo';
-// import WizardStudentBasicInfo from './components/WizardStudentBasicInfo';
-// import WizardStudentCourseInfo from './components/WizardStudentCourseInfo';
-// import WizardStudentGaurdianInfo from './components/WizardStudentGaurdianInfo';
-// import AddStudentWizardData from "./components/data";
-// import AddStudentWizardSchemas from "./components/schema";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import VerticalLinearStepper from '../../../../common/components/VerticalLinearStepper';
 import { AddStudentWizardContext, initialAddStudentWizardState } from './components/context/Store';
 import { AddStudentWizardActionTypes } from './components/context/Actions';
-import { EAddStudentWizardTabs } from '../../../../common/enums/student';
+import {
+    EAddStudentWizardBasicInfoFields,
+    EAddStudentWizardContactInfoFields,
+    EAddStudentWizardTabs,
+    EAddStudentWizardCourseInfoFields,
+    EAddStudentWizardGaurdianInfoFields
+} from '../../../../common/enums/student';
 import StudentWizardBasicInfo from './components/StudentWizardBasicInfo';
 import StudentWizardContactInfo from './components/StudentWizardContactInfo';
 import StudentWizardCourseInfo from './components/StudentWizardCourseInfo';
 import StudentWizardGaurdianInfo from './components/StudentWizardGaurdianInfo';
+import AddStudentWizardSchemas from './components/schemas';
+import { IAddStudentWizardState } from '../../../../common/interface/student';
+import { EStepperStepStatus } from '../../../../common/components/VerticalLinearStepper/components/StepperStep';
 
 export interface IStudentWizardActiveTabCommonProps {
-    handleActiveTabChange?: (p: string) => void;
+    handleActiveTabChange: (p: EAddStudentWizardTabs | string) => void;
+    validateAll: () => void;
+}
+
+const validateThisTab = (thisTabId: EAddStudentWizardTabs, wizardState: IAddStudentWizardState): Partial<IAddStudentWizardState> => {
+    const {
+        studentWizardFieldSchemas: {
+            basicInfoSchema,
+            contactInfoSchema,
+            courseInfoSchema,
+            gaurdianInfoSchema
+        }
+    } = AddStudentWizardSchemas;
+    const {
+        forms: {
+            basicInfo,
+            contactInfo,
+            courseInfo,
+            gaurdianInfo
+        }
+    } = wizardState;
+
+    switch (thisTabId) {
+        case EAddStudentWizardTabs.BASIC_INFO: {
+
+            const newBasicInfo = JSON.parse(JSON.stringify(basicInfo));
+            newBasicInfo.hasErrors = false;
+            Object.keys(newBasicInfo).filter(key => key !== 'hasErrors').map(key => {
+                const field = key as EAddStudentWizardBasicInfoFields;
+                const fieldError = basicInfoSchema[field]
+                    .validate(
+                        newBasicInfo[field].value,
+                        { abortEarly: false }
+                    ).error;
+                newBasicInfo.hasErrors = fieldError ? true : newBasicInfo.hasErrors;
+                return newBasicInfo[field].error = fieldError ? `${fieldError}` : null
+            })
+            return newBasicInfo as typeof basicInfo;
+        }
+        case EAddStudentWizardTabs.CONTACT_INFO: {
+            const newContactInfo = JSON.parse(JSON.stringify(contactInfo));
+            newContactInfo.hasErrors = false;
+            Object.keys(newContactInfo)
+                .filter(key => key !== 'hasErrors')
+                .map(key => {
+                    const field = key as EAddStudentWizardContactInfoFields
+                    const fieldError = contactInfoSchema[field]
+                        .validate(newContactInfo[field]?.value, { abortEarly: false }).error;
+                    newContactInfo.hasErrors = fieldError ? true : newContactInfo.hasErrors;
+                    return newContactInfo[field].error = fieldError ? `${fieldError}` : null
+                })
+            return newContactInfo as typeof newContactInfo;
+        }
+        case EAddStudentWizardTabs.COURSE_INFO: {
+            const newCourseInfo = JSON.parse(JSON.stringify(courseInfo));
+            newCourseInfo.hasErrors = false;
+            Object.keys(newCourseInfo)
+                .filter(key => key !== 'hasErrors')
+                .map(key => {
+                    const field = key as EAddStudentWizardCourseInfoFields
+                    const fieldError = courseInfoSchema[field]
+                        .validate(newCourseInfo[field]?.value, { abortEarly: false }).error;
+                    newCourseInfo.hasErrors = fieldError ? true : newCourseInfo.hasErrors;
+                    return newCourseInfo[field].error = fieldError ? `${fieldError}` : null
+                })
+            return newCourseInfo as typeof newCourseInfo;
+        }
+        case EAddStudentWizardTabs.GAURDIAN_INFO: {
+            const newGaurdianInfo = JSON.parse(JSON.stringify(gaurdianInfo));
+            newGaurdianInfo.hasErrors = false;
+            Object.keys(newGaurdianInfo)
+                .filter(key => key !== 'hasErrors')
+                .map(key => {
+                    const field = key as EAddStudentWizardGaurdianInfoFields
+                    const fieldError = gaurdianInfoSchema[field]
+                        .validate(newGaurdianInfo[field]?.value, { abortEarly: false }).error;
+                    newGaurdianInfo.hasErrors = fieldError ? true : newGaurdianInfo.hasErrors;
+                    return newGaurdianInfo[field].error = fieldError ? `${fieldError}` : null
+                })
+            return newGaurdianInfo as typeof newGaurdianInfo;
+        }
+        default: {
+            return wizardState;
+        }
+    }
+}
+
+const getActiveTabComponent = (activeTab: EAddStudentWizardTabs, commonProps: IStudentWizardActiveTabCommonProps) => {
+    switch (activeTab) {
+        case EAddStudentWizardTabs.BASIC_INFO:
+            return <StudentWizardBasicInfo {...commonProps} />;
+        case EAddStudentWizardTabs.CONTACT_INFO:
+            return <StudentWizardContactInfo {...commonProps} />;
+        case EAddStudentWizardTabs.COURSE_INFO:
+            return <StudentWizardCourseInfo {...commonProps} />;
+        case EAddStudentWizardTabs.GAURDIAN_INFO:
+            return <StudentWizardGaurdianInfo {...{ ...commonProps }} />;
+        default: return;
+    }
+}
+
+const getNewForms = (
+    forms: IAddStudentWizardState["forms"],
+    validationResult: Partial<IAddStudentWizardState>,
+    thisTab: EAddStudentWizardTabs) => {
+    const newForms = { ...forms }
+    switch (thisTab) {
+        case EAddStudentWizardTabs.BASIC_INFO: newForms.basicInfo = validationResult as typeof newForms.basicInfo; break;
+        case EAddStudentWizardTabs.COURSE_INFO: newForms.courseInfo = validationResult as typeof newForms.courseInfo; break;
+        case EAddStudentWizardTabs.CONTACT_INFO: newForms.contactInfo = validationResult as typeof newForms.contactInfo; break;
+        case EAddStudentWizardTabs.GAURDIAN_INFO: newForms.gaurdianInfo = validationResult as typeof newForms.gaurdianInfo; break;
+        default: break;
+    }
+    return newForms;
 }
 
 const AddStudentWizard = () => {
-    // const { open, handleClose, handleCreateNewStudent } = props;
     const { state, dispatch } = useContext(AddStudentWizardContext);
-    const { verticalStepperSteps, activeTab, isWizardOpen } = state;
+    const { verticalStepperSteps, activeTab, isWizardOpen, forms } = state;
 
-    // const {
-    //     stepperSteps: defaultSteps,
-    //     tabIds: defaultTabIds,
-    //     stepStatus: defaultStatus,
-    //     basicInfoDefaultData,
-    //     contactInfoDefaultData,
-    //     courseInfoDefaultData,
-    //     gaurdianInfoDefaultData,
-    //     defaultErrorObject
-    // } = AddStudentWizardData;
-
-    // const {
-    //     basicInfoSchema,
-    //     contactInfoSchema,
-    //     courseInfoSchema,
-    //     gaurdianInfoSchema
-    // } = AddStudentWizardSchemas;
-
-    // const [hasVerified, setHasVerified] = useState(false);
-    // const [basicInfo, setBasicInfo] = useState(basicInfoDefaultData);
-    // const [contactInfo, setContactInfo] = useState(contactInfoDefaultData);
-    // const [courseInfo, setCourseInfo] = useState(courseInfoDefaultData);
-    // const [gaurdianInfo, setGaurdianInfo] = useState(gaurdianInfoDefaultData);
-
-    // const [steps, setSteps] = useState(defaultSteps)
-    // const [validationErrorsObject, setValidationErrors] = useState(defaultErrorObject)
-    // const [activeTab, setActiveTab] = React.useState(defaultTabIds.BASIC_INFO);
-
-    // const validateThisTab = (thisTabId) => {
-    //     switch (thisTabId) {
-    //         case defaultTabIds.BASIC_INFO: return basicInfoSchema.validate(basicInfo, { abortEarly: false });
-    //         case defaultTabIds.CONTACT_INFO: return contactInfoSchema.validate(contactInfo, { abortEarly: false });
-    //         case defaultTabIds.COURSE_INFO: return courseInfoSchema.validate(courseInfo, { abortEarly: false });
-    //         case defaultTabIds.GAURDIAN_INFO: return gaurdianInfoSchema.validate(gaurdianInfo, { abortEarly: false });
-    //         default: return;
-    //     }
-    // }
-
-    // const handleValidateAll = () => {
-    //     const currentValidationErrors = { ...validationErrorsObject };
-    //     let allPass = true;
-    //     const newSteps = steps.map(step => {
-    //         const thisValidationResult = validateThisTab(step.tabId);
-    //         const thisStep = { ...step }
-    //         if (thisValidationResult.error) {
-    //             allPass = false;
-    //             thisStep.status = defaultStatus.ERROR;
-    //             currentValidationErrors[step.tabId] = thisValidationResult.error.details;
-    //         }
-    //         else {
-    //             thisStep.status = defaultStatus.SUCCESS;
-    //             currentValidationErrors[step.tabId] = []
-    //         }
-    //         return thisStep;
-    //     })
-    //     setHasVerified(allPass);
-    //     setValidationErrors(currentValidationErrors);
-    //     setSteps(newSteps);
-    // }
-
-    const handleActiveTabChange = (tabId: string): void => {
-        //     const currentValidationErrors = { ...validationErrorsObject };
+    const handleActiveTabChange = (tabId: EAddStudentWizardTabs | string): void => {
+        let newForms = { ...forms }
         if (activeTab !== tabId) {
-            // const validationResult = validateThisTab(activeTab);
-            // setActiveTab(tabId);
             const newSteps = verticalStepperSteps.map(step => {
                 const thisStep = { ...step }
                 if (activeTab === step.tabId) {
-                    // if (validationResult.error) {
-                    //     thisStep.status = defaultStatus.ERROR;
-                    //     currentValidationErrors[step.tabId] = validationResult.error.details;
-                    // }
-                    // else {
-                    //     thisStep.status = defaultStatus.SUCCESS;
-                    //     currentValidationErrors[step.tabId] = []
-                    // }
+                    const validationResult = validateThisTab(activeTab as EAddStudentWizardTabs, state);
+                    newForms = getNewForms(forms, validationResult, activeTab)
+                    thisStep.status = validationResult.hasErrors ? EStepperStepStatus.ERROR : EStepperStepStatus.SUCCESS;
                 }
                 return thisStep;
             });
-            // setValidationErrors(currentValidationErrors);
-            // setSteps(newSteps);
-
-
             dispatch({
                 type: AddStudentWizardActionTypes.TAB_CHANGE,
                 payload: {
                     activeTab: tabId as EAddStudentWizardTabs,
                     verticalStepperSteps: newSteps,
+                    forms: newForms,
                 }
             })
         }
@@ -132,18 +177,29 @@ const AddStudentWizard = () => {
     //     handleCreateNewStudent({ basicInfo, contactInfo, courseInfo, gaurdianInfo })
     // }
 
-    const getActiveTabComponent = (commonProps: IStudentWizardActiveTabCommonProps) => {
-        switch (activeTab) {
-            case EAddStudentWizardTabs.BASIC_INFO:
-                return <StudentWizardBasicInfo {...commonProps} />;
-            case EAddStudentWizardTabs.CONTACT_INFO:
-                return <StudentWizardContactInfo {...commonProps} />;
-            case EAddStudentWizardTabs.COURSE_INFO:
-                return <StudentWizardCourseInfo {...commonProps} />;
-            case EAddStudentWizardTabs.GAURDIAN_INFO:
-                return <StudentWizardGaurdianInfo {...commonProps} />;
-            default: return;
-        }
+    const validateAll = () => {
+        let newForms = { ...forms }
+        let hasErrors = false;
+        let newSteps = [...verticalStepperSteps]
+        Object.entries(EAddStudentWizardTabs).map(([key, value]) => {
+            const validationResult = validateThisTab(value as EAddStudentWizardTabs, state);
+            if (validationResult.hasErrors) {
+                hasErrors = true;
+            }   
+            newSteps = newSteps.map(step => {
+                const thisStep = { ...step }
+                if (value === step.tabId) {
+                    thisStep.status = validationResult.hasErrors ? EStepperStepStatus.ERROR : EStepperStepStatus.SUCCESS;
+                }
+                return thisStep;
+            });
+            newForms = { ...newForms, ...getNewForms(newForms, validationResult, value) }
+            return { key, validationResult }
+        })
+        dispatch({
+            type: AddStudentWizardActionTypes.WIZARD_VALIDATE_ALL,
+            payload: { forms: newForms, hasErrors, verticalStepperSteps: newSteps }
+        })
     }
 
     const handleClose = () => {
@@ -182,7 +238,7 @@ const AddStudentWizard = () => {
                                 <RestartAltIcon />
                             </IconButton>
                         </Grid>
-                        {getActiveTabComponent({ handleActiveTabChange })}
+                        {getActiveTabComponent(activeTab, { handleActiveTabChange, validateAll })}
                     </Grid>
                 </Grid>
             </Grid>
@@ -190,7 +246,5 @@ const AddStudentWizard = () => {
         </Dialog >
     )
 }
-
-AddStudentWizard.propTypes = {}
 
 export default AddStudentWizard
