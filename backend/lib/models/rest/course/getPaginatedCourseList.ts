@@ -1,4 +1,4 @@
-import { CourseStatus } from "../../enums/course";
+import { CourseStatus } from "../../../enums/course";
 
 export interface IGetPaginatedCourseListRequestSchema {
     page: number;

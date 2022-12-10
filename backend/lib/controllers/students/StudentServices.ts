@@ -6,7 +6,8 @@ import { IDbPaginatedData } from "../../vendors/mongo/BaseMongoClient";
 import { IStudentsModel } from "../../interfaces/students";
 
 export interface IStudentService {
-    getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>>
+    getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>>;
+    createStudent(studentData: IStudentsModel): Promise<IStudentsModel>;
 }
 
 export class StudentService extends BaseService implements IStudentService {
@@ -20,5 +21,9 @@ export class StudentService extends BaseService implements IStudentService {
     async getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>> {
         this.appLogger.logInfo(`Fetching Students List`);
         return this.studentServicesDbApi.getAllStudents(page, limit);
+    }
+    async createStudent(studentData: IStudentsModel): Promise<IStudentsModel> {
+        this.logInfo(`Inserting Student Data`);
+        return this.studentServicesDbApi.createStudent(studentData);
     }
 }

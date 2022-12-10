@@ -17,7 +17,7 @@ export interface IUserSettingsModel {
     role: UserRoles;
 }
 export interface IUserModel {
-    _id?: string | ObjectId;
+    _id?: ObjectId;
     firstName: string;
     lastName?: string;
     gender: UserGenders;

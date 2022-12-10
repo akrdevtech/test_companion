@@ -4,8 +4,7 @@ import { BaseService } from "../BaseService";
 import { IAppFeatures } from "../../interfaces/appFeatures";
 import { IDbPaginatedData } from "../../vendors/mongo/BaseMongoClient";
 import { ICourseModel } from "../../interfaces/course";
-import { CourseStatus } from "../../enums/course";
-import { IGetPaginatedCourseListFiltersSchema } from "../../models/rest/getPaginatedCourseList";
+import { IGetPaginatedCourseListFiltersSchema } from "../../models/rest/course/getPaginatedCourseList";
 
 export interface ICourseService {
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;

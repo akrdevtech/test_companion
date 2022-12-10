@@ -25,8 +25,11 @@ export interface IStudentPerformanceModel {
 export interface IStudentSettingsModel extends IUserSettingsModel {
     hasGraduated: boolean;
     isPresent: boolean;
+    username?: string;
+    password?: string;
 }
 export interface IStudentsModel extends IUserModel {
+    occupation?: string;
     gaurdianInfo: IStudentGaurdianModel;
     courseInfo: IStudentCourseModel;
     performanceInfo: IStudentPerformanceModel;

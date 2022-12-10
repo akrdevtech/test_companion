@@ -8,8 +8,8 @@ import { ObjectId } from 'mongodb';
 import { InternalErrorMessages } from '../../enums/errors';
 import Errors from '../../errors';
 import { CourseStatus } from '../../enums/course';
-import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/getPaginatedCourseList';
 import { HttpStatusCode } from '@akrdevtech/lib-error-handler-middleware';
+import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/course/getPaginatedCourseList';
 const { DatabaseError, InternalError } = Errors;
 
 export interface ICoursesDbApi {

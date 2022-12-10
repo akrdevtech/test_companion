@@ -6,9 +6,9 @@ import { BaseController } from '../BaseController';
 import { ICourseService, CourseService } from './CourseServices';
 import { createCourseValidationSchema } from '../../models/validators/course';
 import { CourseDTO } from '../../models/domain/CourseDTO';
-import { ICreateCourseRequestSchema } from '../../models/rest/createCourse';
+import { ICreateCourseRequestSchema } from '../../models/rest/course/createCourse';
 import { CourseStatus } from '../../enums/course';
-import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/getPaginatedCourseList';
+import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/course/getPaginatedCourseList';
 
 interface IGetPaginatedCourseListRequestSchema { page: number, limit: number, search?: string, status?: CourseStatus }
 export class CoursesController extends BaseController {
