@@ -1,12 +1,9 @@
 import React, { useContext } from 'react'
 import { Chip, Grid } from '@mui/material'
-import PaginationButtons from '../../../common/components/PaginationButtons'
-// import PaginationButtons from '../../../../../../components/common/PaginationButtons'
 import { StudentContext } from '../context/Store';
-// import StudentActions from '../../../../Actions';
-import IconButton from '@mui/material/IconButton';
-import TuneIcon from '@mui/icons-material/Tune';
 import StudentFilters from './StudentFilters';
+import { StudentActionTypes } from '../context/Actions';
+import PaginationButtons, { EPaginationPageChangeModes } from '../../../common/components/PaginationButtons';
 
 const AppliedStudentFilters = () => {
     const { state, dispatch } = useContext(StudentContext);
@@ -26,17 +23,27 @@ const AppliedStudentFilters = () => {
             case 'search': value = ''; break;
             default: value = 'any'; break;
         }
-        // dispatch({
-        //     type: StudentActions.STUDENT_LIST_FILTER_TRAY.APPLY_FILTERS,
-        //     payload: { appliedStudentListFilters: { ...appliedStudentListFilters, [field]: value } }
-        // })
+        dispatch({
+            type: StudentActionTypes.STUDENT_LIST_FILTER_CHANGE,
+            payload: { appliedStudentListFilters: { ...appliedStudentListFilters, [field]: value } }
+        })
     }
 
-    const handlePageChange = (mode: string): void => {
-        if (mode === 'inc') {
-            // dispatch({ type: StudentActions.STUDENT_LIST_PAGINATION.INCREMENT })
+    const handlePageChange = (mode: EPaginationPageChangeModes): void => {
+        if (mode === EPaginationPageChangeModes.INC) {
+            dispatch({
+                type: StudentActionTypes.STUDENT_LIST_PAGINATION_CHANGE,
+                payload: {
+                    studentListPagination: { ...studentListPagination, page: studentListPagination.page + 1 },
+                }
+            })
         } else {
-            // dispatch({ type: StudentActions.STUDENT_LIST_PAGINATION.DECREMENT })
+            dispatch({
+                type: StudentActionTypes.STUDENT_LIST_PAGINATION_CHANGE,
+                payload: {
+                    studentListPagination: { ...studentListPagination, page: studentListPagination.page - 1 },
+                }
+            })
         }
     }
 

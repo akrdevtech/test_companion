@@ -26,6 +26,11 @@ export const StudentReducer = (state: IStudentState, action: StudentActions) => 
                 ...state,
                 appliedStudentListFilters: action.payload.appliedStudentListFilters,
             }
+        case StudentActionTypes.STUDENT_LIST_PAGINATION_CHANGE:
+            return {
+                ...state,
+                studentListPagination: action.payload.studentListPagination,
+            }
         case StudentActionTypes.GENERIC_SNACKBAR_OPEN:
             return {
                 ...state,
