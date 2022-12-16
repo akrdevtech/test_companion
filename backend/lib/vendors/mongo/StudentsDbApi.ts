@@ -1,5 +1,5 @@
 import { DbCollection } from '../../enums/dbCollection';
-import { Collection,ObjectId } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { BaseMongoClient, IDbPaginatedData } from './BaseMongoClient';
 import { IMongoConfig } from '../../config';
 import { IStudentsModel } from '../../interfaces/students';
@@ -8,9 +8,11 @@ import AppErrors from '../../errors';
 import { InternalErrorMessages } from '../../enums/errors';
 import { InternalError } from '@akrdevtech/lib-error-handler-middleware';
 import { HttpStatusCode } from '../../enums/httpStatusCode';
+import { IGetPaginatedStudentListFiltersSchema } from '../../models/rest/student/getPaginatedStudentList';
+import { EStudentAdmissionFilter, EStudentGraduationFilter, EStudentPresenceFilter } from '../../enums/student';
 const { DatabaseError } = AppErrors;
 export interface IStudentsDbApi {
-    getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>>;
+    getPaginatedStudentList(page: number, limit: number, filters: IGetPaginatedStudentListFiltersSchema): Promise<IDbPaginatedData<IStudentsModel>>;
     getStudentById(id: ObjectId | string): Promise<IStudentsModel>;
     createStudent(studentData: IStudentsModel): Promise<IStudentsModel>;
 }
@@ -28,14 +30,40 @@ export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
         return db.collection(DbCollection.STUDENTS);
     }
 
-    async getAllStudents(page: number, limit: number): Promise<IDbPaginatedData<IStudentsModel>> {
-        this.appLogger.logInfo(`[Mongo Service] Fetching Category List`);
+    async getPaginatedStudentList(page: number, limit: number, filters: IGetPaginatedStudentListFiltersSchema): Promise<IDbPaginatedData<IStudentsModel>> {
+        this.logInfo(`Fetching Student List`);
 
         const studentCollection = await this.getStudentCollection();
 
         try {
-            const query = {};
-            const sort = "createdAt";
+            let query = {
+                'settings.isActive': filters.admission === EStudentAdmissionFilter.ACTIVE,
+                'settings.isPresent': filters.presence === EStudentPresenceFilter.PRESENT,
+                'settings.hasGraduated': filters.graduation === EStudentGraduationFilter.COMPLETED,
+                'courseInfo.course': filters.course,
+                $or: [
+                    { firstName: new RegExp(filters.search, 'i') },
+                    { lastName: new RegExp(filters.search, 'i') },
+                    { 'contactInfo.email': new RegExp(filters.search, 'i') },
+                    { 'contactInfo.phone': new RegExp(filters.search, 'i') },
+                ],
+            };
+            if (!filters.search) {
+                delete query.$or
+            }
+            if (!filters.presence || filters.presence === EStudentPresenceFilter.ANY) {
+                delete query['settings.isActive']
+            }
+            if (!filters.admission || filters.admission === EStudentAdmissionFilter.ANY) {
+                delete query['settings.isPresent']
+            }
+            if (!filters.graduation || filters.graduation === EStudentGraduationFilter.ANY) {
+                delete query['settings.hasGraduated']
+            }
+            if (!filters.course) {
+                delete query['courseInfo.course']
+            }            
+            const sort = 'createdAt';
             const sortDirection = -1;
 
             return this.paginateFindQuery(studentCollection, query, sort, sortDirection, page, limit);

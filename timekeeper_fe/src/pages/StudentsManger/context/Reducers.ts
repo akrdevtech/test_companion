@@ -7,6 +7,13 @@ export const StudentReducer = (state: IStudentState, action: StudentActions) => 
             return {
                 ...state,
             }
+        case StudentActionTypes.STUDENT_LIST_GET_UPDATED:
+            return {
+                ...state,
+                studentListPagination: action.payload.studentListPagination,
+                studentsList: action.payload.studentsList,
+                refreshStudentList: action.payload.refreshStudentList,
+            }
         case StudentActionTypes.GENERIC_SNACKBAR_OPEN:
             return {
                 ...state,

@@ -8,9 +8,8 @@ import { createCourseValidationSchema } from '../../models/validators/course';
 import { CourseDTO } from '../../models/domain/CourseDTO';
 import { ICreateCourseRequestSchema } from '../../models/rest/course/createCourse';
 import { CourseStatus } from '../../enums/course';
-import { IGetPaginatedCourseListFiltersSchema } from '../../models/rest/course/getPaginatedCourseList';
+import { IGetPaginatedCourseListFiltersSchema, IGetPaginatedCourseListRequestSchema } from '../../models/rest/course/getPaginatedCourseList';
 
-interface IGetPaginatedCourseListRequestSchema { page: number, limit: number, search?: string, status?: CourseStatus }
 export class CoursesController extends BaseController {
   public basePath: string;
   public courseServices: ICourseService;

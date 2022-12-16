@@ -19,10 +19,15 @@ import StudentWizardGaurdianInfo from './components/StudentWizardGaurdianInfo';
 import AddStudentWizardSchemas from './components/schemas';
 import { IAddStudentWizardState } from '../../../../common/interface/student';
 import { EStepperStepStatus } from '../../../../common/components/VerticalLinearStepper/components/StepperStep';
+import { GlobalContext } from '../../../../common/context/Store';
+import { GlobalActionTypes } from '../../../../common/context/Actions';
+import studentServices from '../../../../services/studentServices';
+import { EAlertSeverity } from '../../../../common/enums/global';
 
 export interface IStudentWizardActiveTabCommonProps {
     handleActiveTabChange: (p: EAddStudentWizardTabs | string) => void;
     validateAll: () => void;
+    createStudent: () => void;
 }
 
 const validateThisTab = (thisTabId: EAddStudentWizardTabs, wizardState: IAddStudentWizardState): Partial<IAddStudentWizardState> => {
@@ -140,6 +145,7 @@ const getNewForms = (
 const AddStudentWizard = () => {
     const { state, dispatch } = useContext(AddStudentWizardContext);
     const { verticalStepperSteps, activeTab, isWizardOpen, forms } = state;
+    const { state: globalState, dispatch: globalDispatch } = useContext(GlobalContext)
 
     const handleActiveTabChange = (tabId: EAddStudentWizardTabs | string): void => {
         let newForms = { ...forms }
@@ -173,9 +179,25 @@ const AddStudentWizard = () => {
         })
     }
 
-    // const createStudent = () => {
-    //     handleCreateNewStudent({ basicInfo, contactInfo, courseInfo, gaurdianInfo })
-    // }
+    const createStudent = () => {
+        studentServices.createStudent(forms).then(() => {
+            globalDispatch({
+                type: GlobalActionTypes.GENERIC_SNACKBAR_OPEN,
+                payload: {
+                    message: "Student Created Successfully",
+                }
+            });
+            handleClose();
+        }).catch(err => {
+            globalDispatch({
+                type: GlobalActionTypes.GENERIC_SNACKBAR_OPEN,
+                payload: {
+                    message: "Student Creation Failed",
+                    severity: EAlertSeverity.ERROR,
+                }
+            })
+        })
+    }
 
     const validateAll = () => {
         let newForms = { ...forms }
@@ -185,7 +207,7 @@ const AddStudentWizard = () => {
             const validationResult = validateThisTab(value as EAddStudentWizardTabs, state);
             if (validationResult.hasErrors) {
                 hasErrors = true;
-            }   
+            }
             newSteps = newSteps.map(step => {
                 const thisStep = { ...step }
                 if (value === step.tabId) {
@@ -238,7 +260,7 @@ const AddStudentWizard = () => {
                                 <RestartAltIcon />
                             </IconButton>
                         </Grid>
-                        {getActiveTabComponent(activeTab, { handleActiveTabChange, validateAll })}
+                        {getActiveTabComponent(activeTab, { handleActiveTabChange, validateAll, createStudent })}
                     </Grid>
                 </Grid>
             </Grid>

@@ -1,18 +1,17 @@
 import React, { useContext } from 'react'
-// import StudentsListItem from './components/StudentsListItem'
 import { Grid } from '@mui/material'
 import NoSearchResults from '../../../../common/icons/placeholders/NoSearchResults';
 import { useTheme } from '@mui/material/styles';
-import { IStudent } from '../../../../common/interface/student';
-// import FilterTray from './components/FilterTray';
+import { IStudentsModel } from '../../../../common/interface/student';
 import Fab from '@mui/material/Fab';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AppliedStudentFilters from '../AppliedStudentFilters';
 import { AddStudentWizardContext } from '../AddStudentWizard/components/context/Store';
 import { AddStudentWizardActionTypes } from '../AddStudentWizard/components/context/Actions';
+import StudentsListItem from './components/StudentsListItem';
 
 interface IStudentListProps {
-    studentsList?: IStudent[];
+    studentsList?: IStudentsModel[];
     selectedStudentId?: string;
     handleSelectStudentId: (thisStudentId: string) => void;
 }
@@ -38,11 +37,11 @@ const StudentsList = (props: IStudentListProps) => {
                     {
                         studentsList?.length ? (studentsList.map(studentInfo => (
                             <Grid item xs={11} lg={6} key={studentInfo?._id} >
-                                {/* <StudentsListItem
+                                <StudentsListItem
                                     studentInfo={studentInfo}
                                     selectedStudentId={selectedStudentId}
                                     handleSelectStudentId={handleSelectStudentId}
-                                /> */}
+                                />
                             </Grid>
                         ))) : (<Grid
                             container

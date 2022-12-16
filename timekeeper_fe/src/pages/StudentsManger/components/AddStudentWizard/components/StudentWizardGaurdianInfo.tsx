@@ -8,7 +8,7 @@ import AddStudentWizardSchemas from './schemas';
 
 const StudentWizardGaurdianInfo = (props: IStudentWizardActiveTabCommonProps) => {
 
-    const { handleActiveTabChange, validateAll } = props;
+    const { handleActiveTabChange, validateAll, createStudent } = props;
 
     const { state, dispatch } = useContext(AddStudentWizardContext);
     const {
@@ -109,7 +109,7 @@ const StudentWizardGaurdianInfo = (props: IStudentWizardActiveTabCommonProps) =>
                         <Button variant='contained' size='small'
                             sx={{ minWidth: 100 }}
                             disabled={hasErrors}
-                        // onClick={() => createCourse()}
+                            onClick={() => createStudent()}
                         >
                             Submit
                         </Button>

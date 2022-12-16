@@ -1,7 +1,7 @@
 import { IStepperStep } from "../components/VerticalLinearStepper/components/StepperStep";
 import { EAddCourseWizardBasicInfoFields, EAddCourseWizardTabs, ECourseDetailTabs, ECourseStatus } from "../enums/course";
 import { IListPagination, IWizardFormFields } from "./global";
-import { IStudent } from "./student";
+import { IStudentsModel } from "./student";
 
 export interface ICourse {
     _id?: string;
@@ -46,10 +46,10 @@ export interface ICourseState {
     courseListPagination: IListPagination;
     courseDetailsActiveTab: ECourseDetailTabs;
     courseDetailsStudents: {
-        studentList: IStudent[];
+        studentList: IStudentsModel[];
         pagination: IListPagination;
         refreshStudentList: boolean;
-        selectedStudentInCourseInfo: IStudent | null | undefined;
+        selectedStudentInCourseInfo: IStudentsModel | null | undefined;
     }
     appliedCourseListFilters: ICourseListFilters;
     isAddCourseWizardOpen: boolean;

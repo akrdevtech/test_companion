@@ -9,6 +9,8 @@ import { StudentContext } from './context/Store';
 import StudentsList from './components/StudentsList'
 import { AddStudentWizardStore } from './components/AddStudentWizard/components/context/Store';
 import AddStudentWizard from './components/AddStudentWizard';
+import studentServices from '../../services/studentServices';
+import { StudentActionTypes } from './context/Actions';
 // import StudentProfile from './components/StudentProfile'
 // import AddStudentWizard from './components/AddStudentWizard';
 // import studentApis from '../../api/studentServices';
@@ -37,6 +39,39 @@ const StudentManager = () => {
             link: '/students'
         }
     ]
+
+    const getUpdatedStudentList = () => {
+        studentServices.getPaginatedStudentList(studentListPagination, appliedStudentListFilters).then(paginatedStudentList => {
+            const { pagination, documents } = paginatedStudentList;
+            console.log(documents);
+            
+            dispatch({
+                type: StudentActionTypes.STUDENT_LIST_GET_UPDATED,
+                payload: {
+                    studentListPagination: pagination,
+                    studentsList: documents,
+                    refreshStudentList: false,
+                }
+            });
+        });
+    }
+
+    useEffect(() => {
+        getUpdatedStudentList();
+    }, [])
+
+    useEffect(() => {
+        getUpdatedStudentList();
+    }, [
+        appliedStudentListFilters.search,
+        appliedStudentListFilters.course,
+        appliedStudentListFilters.admission,
+        appliedStudentListFilters.graduation,
+        appliedStudentListFilters.presence,
+        studentListPagination.page,
+        refreshStudentList === true
+    ])
+
 
     const [searchText, setSearchText] = useState(appliedStudentListFilters.search);
 

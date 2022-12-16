@@ -11,6 +11,8 @@ import { CourseEnrollmentService, ICourseEnrollmentService } from '../enrollment
 import { createNewStudentValidationSchema, getStudentAdmissionNumberSchema } from '../../models/validators/students';
 import { ICreateStudentRequestSchema } from '../../models/rest/student/createStudent';
 import { StudentDTO } from '../../models/domain/StudentDTO';
+import { IGetPaginatedStudentListFiltersSchema, IGetPaginatedStudentListRequestSchema } from '../../models/rest/student/getPaginatedStudentList';
+import { EStudentAdmissionFilter, EStudentGraduationFilter, EStudentPresenceFilter } from '../../enums/student';
 const { InternalError } = errors;
 
 
@@ -37,8 +39,8 @@ export class StudentsController extends BaseController {
 
   public intializeRoutes(): void {
     this.router.get(this.basePath, [
-      this.transactionLogger.logTransaction(`Get All Students`),
-      this.getAllStudents
+      this.transactionLogger.logTransaction(`Get Students`),
+      this.getPaginatedStudentList
     ]);
     this.router.post(this.basePath, [
       this.transactionLogger.logTransaction(`Create new Student`),
@@ -77,11 +79,21 @@ export class StudentsController extends BaseController {
     const thisMonth = thisDate.getMonth() + 1;
     const centerCode = 'RPTC';
     const admissionNumber = `${centerCode}-${thisYear}${thisMonth > 9 ? thisMonth : `0${thisMonth}`}${courseCode}${enrollCount}`
-    response.status(HttpStatusCode.OK).send({ status: 'ok', txId: request.txId, admissionNumber });
+    response.status(HttpStatusCode.OK).send({ status: HttpStatusCode.OK, txId: request.txId, admissionNumber });
   }
 
-  private getAllStudents = async (request: Request, response: Response) => {
-    const studentsList = await this.studentServices.getAllStudents(1, 10);
-    response.status(HttpStatusCode.OK).send({ status: 'ok', txId: request.txId, studentsList });
+  private getPaginatedStudentList = async (request: Request, response: Response) => {
+    const { page, limit, search, admission, course, graduation, presence }: IGetPaginatedStudentListRequestSchema = {
+      page: Number(request.query.page),
+      limit: Number(request.query.limit),
+      search: request.query.search as string,
+      course: request.query.course as string,
+      admission: request.query.admission as EStudentAdmissionFilter,
+      graduation: request.query.graduation as EStudentGraduationFilter,
+      presence: request.query.presence as EStudentPresenceFilter,
+    };
+    const filters: IGetPaginatedStudentListFiltersSchema = { search, admission, course, graduation, presence };
+    const studentsList = await this.studentServices.getPaginatedStudentList(page, limit, filters);
+    response.status(HttpStatusCode.OK).send({ status: HttpStatusCode.OK, txId: request.txId, studentsList });
   };
 }
