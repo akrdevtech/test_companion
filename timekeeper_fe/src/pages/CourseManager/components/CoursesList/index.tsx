@@ -22,7 +22,6 @@ const CourseList = (props: ICourseListProps) => {
     const { dispatch } = useContext(CourseContext)
 
     const handleAddStudentWizardOpen = () => {
-        console.log("opening");
         dispatch({
             type: CourseActionTypes.ADD_COURSE_WIZARD_OPEN,
             payload: {}

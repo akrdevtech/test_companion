@@ -32,9 +32,7 @@ const CourseSyllabus = (props) => {
     } = selectedCourseInfo;
 
     useEffect(() => {
-        console.log(`CourseSyllabus ${courseId}`);
         syllabusApis.getSyllabusForCourse(courseId).then(syllabusData => {
-            console.log({ syllabusData });
             dispatch({
                 type: CourseActions.COURSE_DETAILS.SYLLABUS.GET_UPDATED_SYLLABUS,
                 payload: {

@@ -39,10 +39,8 @@ const CourseEnrolledStudents = (props) => {
 
 
     useEffect(() => {
-        console.log(`CourseEnrolledStudents ${graduated}`);
         studentApis.getStudentsList(page, limit, { course: [selectedCourseInfo.courseId], graduation: graduated }).then(studentListData => {
             const { count, rows } = studentListData
-            console.log(rows);
             dispatch({
                 type: CourseActions.COURSE_DETAILS.ENROLLMENTS.GET_UPDATED_ENROLLMENTS,
                 payload: {

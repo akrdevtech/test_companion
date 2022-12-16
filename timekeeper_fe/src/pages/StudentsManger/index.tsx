@@ -36,8 +36,6 @@ const StudentManager = () => {
     const getUpdatedStudentList = () => {
         studentServices.getPaginatedStudentList(studentListPagination, appliedStudentListFilters).then(paginatedStudentList => {
             const { pagination, documents } = paginatedStudentList;
-            console.log(documents);
-
             dispatch({
                 type: StudentActionTypes.STUDENT_LIST_GET_UPDATED,
                 payload: {

@@ -26,12 +26,10 @@ export default function SyllabusEditor({ open, handleClickOpen, handleClose }) {
   const inputEl = useRef(null);
 
   const selectContent = (node) => {
-    console.log(node);
     setSelectedSyllabusContentInEditor(node);
   }
 
   const submit = (data) => {
-    console.log(data);
     inputEl.current.innerHTML = data;
     setSyllabusContents(data)
   }

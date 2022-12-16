@@ -21,7 +21,6 @@ const AddCourseWizard = () => {
     const { activeTab, verticalStepperSteps } = state;
 
     const handleClose = (activity: boolean = false): void => {
-        console.log(`closing:${activity}`);
         courseDispatch({
             type: CourseActionTypes.ADD_COURSE_WIZARD_CLOSE,
             payload: { refreshCourseList: activity }
