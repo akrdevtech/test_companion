@@ -14,6 +14,13 @@ export const StudentReducer = (state: IStudentState, action: StudentActions) => 
                 studentsList: action.payload.studentsList,
                 refreshStudentList: action.payload.refreshStudentList,
             }
+        case StudentActionTypes.STUDENTS_LIST_SELECT_STUDENT:
+            return {
+                ...state,
+                selectedStudentId: action.payload.selectedStudentId,
+                selectedStudentInfo: action.payload.selectedStudentInfo,
+                studentDetailsActiveTab: action.payload.activeTabName,
+            };
         case StudentActionTypes.GENERIC_SNACKBAR_OPEN:
             return {
                 ...state,

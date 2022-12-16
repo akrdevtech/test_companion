@@ -1,3 +1,4 @@
+import { EStudentDetailTabs } from "../../../common/enums/student";
 import { IListPagination } from "../../../common/interface/global";
 import { IStudentsModel } from "../../../common/interface/student";
 import { ActionMap } from "../../../common/types/global";
@@ -7,7 +8,8 @@ export enum StudentActionTypes {
     APP_DRAWER_SELECT_PAGE = 'APP-DRAWER-SELECT-PAGE',
     GENERIC_SNACKBAR_OPEN = 'GENERIC-SNACKBAR-OPEN',
     GENERIC_SNACKBAR_CLOSE = 'GENERIC-SNACKBAR-CLOSE',
-    STUDENT_LIST_GET_UPDATED = 'STUDENT-LIST-GET-UPDATED'
+    STUDENT_LIST_GET_UPDATED = 'STUDENT-LIST-GET-UPDATED',
+    STUDENTS_LIST_SELECT_STUDENT = 'STUDENTS-LIST-SELECT-STUDENT'
 }
 export type StudentActionsPayload = {
     [StudentActionTypes.STUDENT_LIST_GET_UPDATED]: {
@@ -15,6 +17,11 @@ export type StudentActionsPayload = {
         studentsList: IStudentsModel[],
         refreshStudentList: boolean,
     };
+    [StudentActionTypes.STUDENTS_LIST_SELECT_STUDENT]: {
+        selectedStudentId?: string;
+        selectedStudentInfo?: IStudentsModel;
+        activeTabName: EStudentDetailTabs
+    }
     [StudentActionTypes.APP_DRAWER_SELECT_PAGE]: {
     };
     [StudentActionTypes.GENERIC_SNACKBAR_OPEN]: {

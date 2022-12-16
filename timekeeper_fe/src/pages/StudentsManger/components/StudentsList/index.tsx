@@ -18,7 +18,7 @@ interface IStudentListProps {
 const StudentsList = (props: IStudentListProps) => {
     const theme = useTheme()
     const { studentsList, selectedStudentId, handleSelectStudentId } = props;
-    const { state, dispatch } = useContext(AddStudentWizardContext);
+    const { dispatch } = useContext(AddStudentWizardContext);
 
     const handleAddStudentWizardOpen = () => {
         dispatch({
