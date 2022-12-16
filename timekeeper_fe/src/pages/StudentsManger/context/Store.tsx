@@ -10,7 +10,7 @@ import { StudentActions } from './Actions';
 import { StudentReducer } from './Reducers';
 
 const today: Date = new Date();
-const initialState: IStudentState = {
+const InitialStudentState: IStudentState = {
     studentsList: [],
     refreshStudentList: false,
     selectedStudentId: undefined,
@@ -45,7 +45,7 @@ const initialState: IStudentState = {
 };
 
 const StudentContext = createContext<{ state: IStudentState; dispatch: Dispatch<StudentActions> }>({
-    state: initialState,
+    state: InitialStudentState,
     dispatch: () => null
 });
 
@@ -54,7 +54,7 @@ const mainReducer = (initialState: IStudentState, action: StudentActions) => Stu
 type AppProps = { children: ReactNode };
 
 const StudentStore = ({ children }: AppProps) => {
-    const [state, dispatch] = useReducer(mainReducer, initialState);
+    const [state, dispatch] = useReducer(mainReducer, InitialStudentState);
     return (
         <StudentContext.Provider value={{ state, dispatch }}>
             {children}
@@ -62,4 +62,4 @@ const StudentStore = ({ children }: AppProps) => {
     )
 }
 
-export { StudentStore, StudentContext };
+export { StudentStore, StudentContext, InitialStudentState };

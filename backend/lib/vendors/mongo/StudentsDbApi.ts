@@ -52,17 +52,17 @@ export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
                 delete query.$or
             }
             if (!filters.presence || filters.presence === EStudentPresenceFilter.ANY) {
-                delete query['settings.isActive']
+                delete query['settings.isPresent']
             }
             if (!filters.admission || filters.admission === EStudentAdmissionFilter.ANY) {
-                delete query['settings.isPresent']
+                delete query['settings.isActive']
             }
             if (!filters.graduation || filters.graduation === EStudentGraduationFilter.ANY) {
                 delete query['settings.hasGraduated']
             }
             if (!filters.course) {
                 delete query['courseInfo.course']
-            }            
+            }
             const sort = 'createdAt';
             const sortDirection = -1;
 

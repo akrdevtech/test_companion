@@ -21,6 +21,11 @@ export const StudentReducer = (state: IStudentState, action: StudentActions) => 
                 selectedStudentInfo: action.payload.selectedStudentInfo,
                 studentDetailsActiveTab: action.payload.activeTabName,
             };
+        case StudentActionTypes.STUDENT_LIST_FILTER_CHANGE:
+            return {
+                ...state,
+                appliedStudentListFilters: action.payload.appliedStudentListFilters,
+            }
         case StudentActionTypes.GENERIC_SNACKBAR_OPEN:
             return {
                 ...state,
