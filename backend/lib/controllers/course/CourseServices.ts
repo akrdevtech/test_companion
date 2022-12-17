@@ -13,6 +13,7 @@ export interface ICourseService {
     getCourseByCourseId(courseId: string): Promise<ICourseModel>;
     getNextCourseCode(): Promise<number>;
     generateCode(prefix: string, index: number): string;
+    enrollStudentToCourse(courseId: string, numberOfStudents?: number): Promise<boolean>
 }
 
 export class CourseService extends BaseService implements ICourseService {
@@ -41,6 +42,10 @@ export class CourseService extends BaseService implements ICourseService {
     async getPaginatedCourseList(page: number, limit: number, filters: IGetPaginatedCourseListFiltersSchema): Promise<IDbPaginatedData<ICourseModel>> {
         this.logInfo(`Fetching Courses List`);
         return this.courseServicesDbApi.getPaginatedCourseList(page, limit, filters);
+    }
+    async enrollStudentToCourse(courseId: string, numberOfStudents = 1): Promise<boolean> {
+        this.logInfo(`Enrolling student to course`);
+        return this.courseServicesDbApi.enrollStudentToCourse(courseId, numberOfStudents);
     }
     async createCourse(courseData: ICourseModel): Promise<ICourseModel> {
         this.logInfo(`Inserting Courses Data`);

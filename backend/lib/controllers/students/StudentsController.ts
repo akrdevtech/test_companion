@@ -59,6 +59,7 @@ export class StudentsController extends BaseController {
     const data = request.body as ICreateStudentRequestSchema;
     const { courseInfo: { course, dateOfAdmission } } = data;
     await this.courseEnrollmentServices.upsertEnrollment(course, dateOfAdmission);
+    await this.courseServices.enrollStudentToCourse(course);
     const courseData = await this.studentServices.createStudent(this.studentDTO.fromCreateRequestToDb(data));
     this.sendResponse(response, HttpStatusCode.OK, { status: HttpStatusCode.OK, txId: request.txId, courseData });
   }

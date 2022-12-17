@@ -18,6 +18,7 @@ export interface ICoursesDbApi {
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
     getCourseByCourseId(courseId: string): Promise<ICourseModel>;
     getNextCourseCode(): Promise<number>;
+    enrollStudentToCourse(courseId: string, numberOfStudents: number): Promise<boolean>;
 }
 export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     protected appLogger: IAppFeatures["AppLoger"];
@@ -29,6 +30,24 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     protected async getCourseCollection(): Promise<Collection> {
         const db = await this.getDb();
         return db.collection(DbCollection.COURSES);
+    }
+
+    async enrollStudentToCourse(courseId: string, numberOfStudents = 1): Promise<boolean> {
+        this.logInfo(`Enrolling student to course`);
+        const courseCollection = await this.getCourseCollection();
+        const existing = await this.getCourseByCourseId(courseId);
+        if (!existing) {
+            this.logInfo(`Course ${courseId} doesnot exist`);
+            return false;
+        }
+        const updateData: Partial<ICourseModel> = {
+            studentsAttending: Number(existing.studentsAttending) + numberOfStudents
+        }
+        const updateResposne = await courseCollection.updateOne({ courseId }, { $set: updateData });
+        if (!updateResposne.modifiedCount) {
+            return false;
+        }
+        return true;
     }
 
     async getNextCourseCode(): Promise<number> {

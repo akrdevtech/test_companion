@@ -67,10 +67,15 @@ export class CourseEnrollmentsDbApi extends BaseMongoClient implements ICourseEn
     }
 
     async updateCourseEnrollment(id: string, enrollmentData: Partial<ICourseEnrollmentsModel>): Promise<ICourseEnrollmentsModel> {
-        this.logInfo(`Updating Enrollment  ${enrollmentData._id}`);
-        const enrollmentCollection = await this.getCourseEnrollmentCollection();
-        const updateResponse = await enrollmentCollection.updateOne({ _id: new ObjectId(id) }, enrollmentData);
-        this.logInfo(`${updateResponse.modifiedCount ? `Updated ${updateResponse.modifiedCount} records` : `Failed to update`}`);
-        return this.getCourseEnrollmentById(id);
+        try {
+            this.logInfo(`Updating Enrollment  ${id} with ${JSON.stringify(enrollmentData)}`);
+            const enrollmentCollection = await this.getCourseEnrollmentCollection();
+            const updateResponse = await enrollmentCollection.updateOne({ _id: new ObjectId(id) }, { $set: enrollmentData });
+            this.logInfo(`${updateResponse.modifiedCount ? `Updated ${updateResponse.modifiedCount} records` : `Failed to update`}`);
+            return this.getCourseEnrollmentById(id);
+        } catch (error) {
+            this.logError(JSON.stringify(error));
+            throw new DatabaseError(error.message, error.stack);
+        }
     }
 }
