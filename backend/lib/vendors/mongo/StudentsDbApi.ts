@@ -15,26 +15,31 @@ export interface IStudentsDbApi {
     getPaginatedStudentList(page: number, limit: number, filters: IGetPaginatedStudentListFiltersSchema): Promise<IDbPaginatedData<IStudentsModel>>;
     getStudentById(id: ObjectId | string): Promise<IStudentsModel>;
     createStudent(studentData: IStudentsModel): Promise<IStudentsModel>;
+    getStudentByEmail(email: string): Promise<IStudentsModel | undefined>;
+    deleteStudentById(id: ObjectId | string): Promise<boolean>;
+    updateStudentById(studentId: string, updateData: Partial<IStudentsModel>): Promise<boolean>;
 }
-
 export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
     protected appLogger: IAppFeatures["AppLoger"];
-
     constructor(mongoConfig: IMongoConfig, appFeatures?: IAppFeatures) {
         super(mongoConfig, appFeatures, { moduleName: 'Student DB' });
         this.appLogger = appFeatures.AppLoger;
     }
-
     protected async getStudentCollection(): Promise<Collection> {
         const db = await this.getDb();
         return db.collection(DbCollection.STUDENTS);
     }
-
+    async updateStudentById(studentId: string, updateData: Partial<IStudentsModel>): Promise<boolean> {
+        const studentCollection = await this.getStudentCollection();
+        const updateResposne = await studentCollection.updateOne({ _id: new ObjectId(studentId) }, { $set: updateData });
+        if (!updateResposne.modifiedCount) {
+            return false;
+        }
+        return true;
+    }
     async getPaginatedStudentList(page: number, limit: number, filters: IGetPaginatedStudentListFiltersSchema): Promise<IDbPaginatedData<IStudentsModel>> {
         this.logInfo(`Fetching Student List`);
-
         const studentCollection = await this.getStudentCollection();
-
         try {
             let query = {
                 'settings.isActive': filters.admission === EStudentAdmissionFilter.ACTIVE,
@@ -65,7 +70,6 @@ export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
             }
             const sort = 'createdAt';
             const sortDirection = -1;
-
             return this.paginateFindQuery(studentCollection, query, sort, sortDirection, page, limit);
         } catch (error) {
             this.appLogger.logError(JSON.stringify(error));
@@ -76,6 +80,21 @@ export class StudentsDbApi extends BaseMongoClient implements IStudentsDbApi {
         this.logInfo(`Fetching Student Data for id ${id.toString()}`);
         const studentCollection = await this.getStudentCollection();
         const record = await studentCollection.findOne({ _id: new ObjectId(id) });
+        return record as IStudentsModel;
+    }
+    async deleteStudentById(id: ObjectId | string): Promise<boolean> {
+        this.logInfo(`Deleting Student :${id}`);
+        const studentCollection = await this.getStudentCollection();
+        const response = await studentCollection.deleteOne({ _id: new ObjectId(id) });
+        return response.deletedCount > 0;
+    }
+    async getStudentByEmail(email: string): Promise<IStudentsModel | undefined> {
+        this.logInfo(`Fetching Student Data for email ${email}`);
+        const studentCollection = await this.getStudentCollection();
+        const record = await studentCollection.findOne({ 'contactInfo.email': email });
+        if (!record) {
+            return undefined
+        }
         return record as IStudentsModel;
     }
     async createStudent(studentData: IStudentsModel): Promise<IStudentsModel> {

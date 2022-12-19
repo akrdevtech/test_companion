@@ -1,10 +1,6 @@
 import { UserGenders, UserRoles } from "../enums/users";
 import { ObjectId } from 'mongodb';
 
-export interface IAttendanceModel {
-    clockedInAt: Date;
-    clockedOutAt?: Date;
-}
 export interface IContactInfoModel {
     email: string;
     phone: string;
@@ -24,5 +20,4 @@ export interface IUserModel {
     dateOfBirth: Date;
     contactInfo: IContactInfoModel;
     settings: IUserSettingsModel;
-    attendance: IAttendanceModel[];
 }

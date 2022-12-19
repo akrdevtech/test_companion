@@ -18,45 +18,31 @@ export interface ICoursesDbApi {
     createCourse(courseData: ICourseModel): Promise<ICourseModel>;
     getCourseByCourseId(courseId: string): Promise<ICourseModel>;
     getNextCourseCode(): Promise<number>;
-    enrollStudentToCourse(courseId: string, numberOfStudents: number): Promise<boolean>;
+    updateCourseByCourseId(courseId: string, updateData: Partial<ICourseModel>): Promise<boolean>;
 }
 export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
     protected appLogger: IAppFeatures["AppLoger"];
-
     constructor(mongoConfig: IMongoConfig, appFeatures?: IAppFeatures) {
         super(mongoConfig, appFeatures, { moduleName: 'Course DB' });
     }
-
     protected async getCourseCollection(): Promise<Collection> {
         const db = await this.getDb();
         return db.collection(DbCollection.COURSES);
     }
-
-    async enrollStudentToCourse(courseId: string, numberOfStudents = 1): Promise<boolean> {
-        this.logInfo(`Enrolling student to course`);
+    async updateCourseByCourseId(courseId: string, updateData: Partial<ICourseModel>): Promise<boolean> {
         const courseCollection = await this.getCourseCollection();
-        const existing = await this.getCourseByCourseId(courseId);
-        if (!existing) {
-            this.logInfo(`Course ${courseId} doesnot exist`);
-            return false;
-        }
-        const updateData: Partial<ICourseModel> = {
-            studentsAttending: Number(existing.studentsAttending) + numberOfStudents
-        }
         const updateResposne = await courseCollection.updateOne({ courseId }, { $set: updateData });
         if (!updateResposne.modifiedCount) {
             return false;
         }
         return true;
     }
-
     async getNextCourseCode(): Promise<number> {
         this.logInfo(`Fetching Next Course Code`);
         const courseCollection = await this.getCourseCollection();
         const response = await courseCollection.find().sort({ code: -1 }).limit(1).toArray() as Partial<ICourseModel>[];
         return response?.[0]?.code ? Number(response?.[0]?.code) + 1 : 1;
     }
-
     async getCourseMenuList(): Promise<Partial<ICourseModel>[]> {
         this.logInfo(`Fetching Course Menu List`);
         const courseCollection = await this.getCourseCollection();
@@ -91,21 +77,18 @@ export class CoursesDbApi extends BaseMongoClient implements ICoursesDbApi {
             throw new DatabaseError(error.message, error.stack);
         }
     }
-
     async getCourseById(id: ObjectId | string): Promise<ICourseModel> {
         this.logInfo(`Fetching Course Data for id ${id.toString()}`);
         const courseCollection = await this.getCourseCollection();
         const record = await courseCollection.findOne({ _id: new ObjectId(id) });
         return record as ICourseModel;
     }
-
     async getCourseByCourseId(courseId: string): Promise<ICourseModel> {
         this.logInfo(`Fetching Course Data for course id ${courseId}`);
         const courseCollection = await this.getCourseCollection();
         const record = await courseCollection.findOne({ courseId });
         return record as ICourseModel;
     }
-
     async createCourse(courseData: ICourseModel): Promise<ICourseModel> {
         this.logInfo(`Creating new Course ${courseData.courseName}`);
         try {

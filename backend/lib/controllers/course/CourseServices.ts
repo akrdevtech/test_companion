@@ -13,7 +13,8 @@ export interface ICourseService {
     getCourseByCourseId(courseId: string): Promise<ICourseModel>;
     getNextCourseCode(): Promise<number>;
     generateCode(prefix: string, index: number): string;
-    enrollStudentToCourse(courseId: string, numberOfStudents?: number): Promise<boolean>
+    enrollStudentToCourse(courseId: string, numberOfStudents?: number): Promise<boolean>;
+    expellStudentFromCourse(courseId: string, hasGraduated: boolean, numberOfStudents?: number): Promise<boolean>;
 }
 
 export class CourseService extends BaseService implements ICourseService {
@@ -45,10 +46,31 @@ export class CourseService extends BaseService implements ICourseService {
     }
     async enrollStudentToCourse(courseId: string, numberOfStudents = 1): Promise<boolean> {
         this.logInfo(`Enrolling student to course`);
-        return this.courseServicesDbApi.enrollStudentToCourse(courseId, numberOfStudents);
+        const existing = await this.courseServicesDbApi.getCourseByCourseId(courseId);
+        if (!existing) {
+            this.logInfo(`Course ${courseId} doesnot exist`);
+            return false;
+        }
+        const updateData: Partial<ICourseModel> = {
+            studentsAttending: Number(existing.studentsAttending) + numberOfStudents
+        }
+        return this.courseServicesDbApi.updateCourseByCourseId(courseId, updateData);
     }
     async createCourse(courseData: ICourseModel): Promise<ICourseModel> {
         this.logInfo(`Inserting Courses Data`);
         return this.courseServicesDbApi.createCourse(courseData);
+    }
+    async expellStudentFromCourse(courseId: string, hasGraduated: boolean, numberOfStudents = 1): Promise<boolean> {
+        const existingCourse = await this.courseServicesDbApi.getCourseByCourseId(courseId);
+        let newAttendingCount = Number(existingCourse.studentsAttending);
+        let newGraduatingCount = Number(existingCourse.studentsGraduated);
+        if (hasGraduated) {
+            newGraduatingCount = newGraduatingCount - Number(numberOfStudents);
+        } else {
+            newAttendingCount = newAttendingCount - Number(numberOfStudents);
+        }
+        const updateData = { studentsAttending: newAttendingCount, studentsGraduated: newGraduatingCount }
+        const updated = await this.courseServicesDbApi.updateCourseByCourseId(courseId, updateData);
+        return updated;
     }
 }

@@ -38,3 +38,28 @@ export const createNewStudentValidationSchema: IValidateAllSchema = {
         gaurdianInfo: gaurdianInfoSchema
     }),
 }
+export const deleteStudentValidationSchema: IValidateAllSchema = {
+    params: Joi.object({
+        studentId: Joi.string().min(3).required(),
+    }),
+}
+export const activateStudentValidationSchema: IValidateAllSchema = {
+    params: Joi.object({
+        studentId: Joi.string().min(3).required(),
+    }),
+}
+export const deActivateStudentValidationSchema: IValidateAllSchema = {
+    params: Joi.object({
+        studentId: Joi.string().min(3).required(),
+    }),
+}
+export const graduateStudentValidationSchema: IValidateAllSchema = {
+    params: Joi.object({
+        studentId: Joi.string().min(3).required(),
+    }),
+}
+export const pursueStudentValidationSchema: IValidateAllSchema = {
+    params: Joi.object({
+        studentId: Joi.string().min(3).required(),
+    }),
+}

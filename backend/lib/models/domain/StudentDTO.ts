@@ -42,7 +42,6 @@ export class StudentDTO {
                 hasGraduated: false, isActive: true, isPresent: false,
                 role: UserRoles.STUDENT, username: email, password: phone,
             },
-            attendance: [],
             contactInfo: {
                 addressLine1, addressLine2, email, phone, pin: pin.toString()
             },
