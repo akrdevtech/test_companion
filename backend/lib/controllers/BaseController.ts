@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, RequestHandler, Response } from 'express';
-import { IAppFeatures } from '../interfaces/appFeatures';
+import { IAppFeatures } from '../interfaces/AppFeatures';
 import { IAppConfig } from '../config';
 import { logInfo } from '../log/util';
 import { ITransactionLogger, TransactionLogger } from '../middleware/tracing/transaction_middleware';

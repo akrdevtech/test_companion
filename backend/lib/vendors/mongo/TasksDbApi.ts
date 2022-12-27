@@ -1,7 +1,7 @@
 import { DbCollection } from '../../enums/dbCollection';
 import { Collection, ObjectId } from 'mongodb';
 import { IMongoConfig } from "../../config";
-import { IAppFeatures } from "../../interfaces/appFeatures";
+import { IAppFeatures } from "../../interfaces/AppFeatures";
 import { BaseMongoClient } from "./BaseMongoClient";
 import { ITaskModel } from '../../interfaces/task';
 import { DatabaseError, InternalError } from '@akrdevtech/lib-error-handler-middleware';

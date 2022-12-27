@@ -1,5 +1,5 @@
 import { BaseMongoClient as MongoClient, IMongoConfig } from '@akrdevtech/lib-mongodb-with-migrate';
-import { IAppFeatures } from '../../interfaces/appFeatures';
+import { IAppFeatures } from '../../interfaces/AppFeatures';
 import { Collection } from 'mongodb';
 
 export declare type Sort = string | Exclude<SortDirection, { $meta: string; }> | string[] | { [key: string]: SortDirection; } | Map<string, SortDirection> | [string, SortDirection][] | [string, SortDirection];

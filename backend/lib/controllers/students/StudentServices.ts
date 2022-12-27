@@ -1,9 +1,9 @@
 import { IStudentsDbApi, StudentsDbApi } from "../../vendors/mongo/StudentsDbApi";
 import { IAppConfig } from "../../config";
 import { BaseService } from "../BaseService";
-import { IAppFeatures } from "../../interfaces/appFeatures";
+import { IAppFeatures } from "../../interfaces/AppFeatures";
 import { IDbPaginatedData } from "../../vendors/mongo/BaseMongoClient";
-import { IStudentsModel } from "../../interfaces/students";
+import { IStudentsModel } from "../../interfaces/Students";
 import { IGetPaginatedStudentListFiltersSchema } from "../../models/rest/student/getPaginatedStudentList";
 import { ValidationError } from "@akrdevtech/lib-error-handler-middleware";
 export interface IStudentService {

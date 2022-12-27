@@ -1,7 +1,7 @@
 import { ICourseEnrollmentsDbApi, CourseEnrollmentsDbApi } from "../../vendors/mongo/EnrollmentsDbApi";
 import { IAppConfig } from "../../config";
 import { BaseService } from "../BaseService";
-import { IAppFeatures } from "../../interfaces/appFeatures";
+import { IAppFeatures } from "../../interfaces/AppFeatures";
 import { ICourseEnrollmentsModel } from "../../interfaces/enrollment";
 
 export interface ICourseEnrollmentService {

@@ -1,5 +1,5 @@
 import { ICreateStudentRequestSchema } from "../rest/student/createStudent";
-import { IStudentsModel } from "../../interfaces/students";
+import { IStudentsModel } from "../../interfaces/Students";
 import { UserGenders, UserRoles } from "../../enums/users";
 
 export class StudentDTO {

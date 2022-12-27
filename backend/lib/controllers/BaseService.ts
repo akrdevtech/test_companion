@@ -1,4 +1,4 @@
-import { IAppFeatures } from "../interfaces/appFeatures";
+import { IAppFeatures } from "../interfaces/AppFeatures";
 
 export interface IServicesOptions {
     moduleName: string;

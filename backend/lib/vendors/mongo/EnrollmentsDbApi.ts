@@ -3,7 +3,7 @@ import { Collection } from 'mongodb';
 import { BaseMongoClient } from './BaseMongoClient';
 import { IMongoConfig } from '../../config';
 import { ICourseEnrollmentsModel } from '../../interfaces/enrollment';
-import { IAppFeatures } from '../../interfaces/appFeatures';
+import { IAppFeatures } from '../../interfaces/AppFeatures';
 import { ObjectId } from 'mongodb';
 import { InternalErrorMessages } from '../../enums/errors';
 import Errors from '../../errors';

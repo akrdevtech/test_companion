@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { IAppFeatures } from '../../interfaces/appFeatures';
+import { IAppFeatures } from '../../interfaces/AppFeatures';
 import { IAppConfig } from '../../config';
 import { HttpStatusCode } from '../../enums/httpStatusCode';
 import { BaseController } from '../BaseController';

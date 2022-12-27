@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import { ConfigManager } from './lib/config';
 import { App } from './app';
 import { HealthCheckController } from './lib/controllers/common/HealthCheckController';
-import { IAppFeatures } from './lib/interfaces/appFeatures';
+import { IAppFeatures } from './lib/interfaces/AppFeatures';
 import { appLogger } from './lib/log/util';
 import { StudentsController } from './lib/controllers/students/StudentsController';
 import { CoursesController } from './lib/controllers/course/CourseController';

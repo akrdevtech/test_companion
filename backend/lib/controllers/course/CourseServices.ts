@@ -1,7 +1,7 @@
 import { ICoursesDbApi, CoursesDbApi } from "../../vendors/mongo/CoursesDbApi";
 import { IAppConfig } from "../../config";
 import { BaseService } from "../BaseService";
-import { IAppFeatures } from "../../interfaces/appFeatures";
+import { IAppFeatures } from "../../interfaces/AppFeatures";
 import { IDbPaginatedData } from "../../vendors/mongo/BaseMongoClient";
 import { ICourseModel } from "../../interfaces/course";
 import { IGetPaginatedCourseListFiltersSchema } from "../../models/rest/course/getPaginatedCourseList";
