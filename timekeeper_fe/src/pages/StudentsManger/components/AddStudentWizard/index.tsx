@@ -145,7 +145,7 @@ const getNewForms = (
 const AddStudentWizard = () => {
     const { state, dispatch } = useContext(AddStudentWizardContext);
     const { verticalStepperSteps, activeTab, isWizardOpen, forms } = state;
-    const { state: globalState, dispatch: globalDispatch } = useContext(GlobalContext)
+    const { dispatch: globalDispatch } = useContext(GlobalContext)
 
     const handleActiveTabChange = (tabId: EAddStudentWizardTabs | string): void => {
         let newForms = { ...forms }

@@ -1,6 +1,7 @@
 import { Button, Grid, TextField } from '@mui/material';
 import React, { useContext } from 'react'
 import { IStudentWizardActiveTabCommonProps } from '..';
+import RichTextEditor from '../../../../../common/components/RichTextEditor';
 import { EAddStudentWizardGaurdianInfoFields, EAddStudentWizardTabs } from '../../../../../common/enums/student';
 import { AddStudentWizardActionTypes } from './context/Actions';
 import { AddStudentWizardContext } from './context/Store';
@@ -84,6 +85,9 @@ const StudentWizardGaurdianInfo = (props: IStudentWizardActiveTabCommonProps) =>
                         error={phoneOfGaurdian.error !== null}
                         helperText={phoneOfGaurdian.error || " "}
                     />
+                </Grid>
+                <Grid item xs={12} lg={12}>
+                    <RichTextEditor />
                 </Grid>
                 <Grid item xs={12} lg={6} sx={{
                     position: 'absolute',

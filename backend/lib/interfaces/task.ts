@@ -1,17 +1,27 @@
-import { TaskModes } from '../enums/task';
 import { ObjectId } from 'mongodb';
+import { TaskModes } from '../enums/task';
+import { IQuestionsModel } from './questions';
 
-export interface ITaskAnswerKeyModel {
-    qNumber: string;
-    question?: string;
-    answer?: string;
+interface IQuestionBank extends IQuestionsModel {
+    questionNumber: string;
+}
+interface ITaskContentBlock {
+    contentIndex: number;
+    content: string;
+    attachments?: string[];
+    questionBank: IQuestionBank[];
 }
 export interface ITaskModel {
-    _id?: string | ObjectId;
+    _id?: ObjectId;
     title: string;
     code: string;
-    contents: string;
-    description?: string;
     mode: TaskModes;
-    answerKey?: ITaskAnswerKeyModel[];
+    duration: number;
+    totalScore: number;
+    minimunScore: number;
+    createdAt: Date;
+    updatedAt: Date;
+    description?: string;
+    attachments?: string[];
+    contentBlocks: ITaskContentBlock[];
 }
