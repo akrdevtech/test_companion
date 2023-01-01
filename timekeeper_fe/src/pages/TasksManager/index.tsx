@@ -3,6 +3,7 @@ import React from 'react'
 import PageHeader from '../../common/components/PageHeader'
 import { EPageTitles } from '../../common/enums/global'
 import HomeIcon from '@mui/icons-material/Home';
+import TaskDetails from './components/TaskDetails';
 
 const breadCrumbs = [
     {
@@ -16,18 +17,18 @@ const TasksManager = () => {
     return (
         <Grid container direction="row">
             <Grid item xs={12} lg={8} sx={{ backgroundColor: "#F5F8FB", padding: 2, minHeight: window.innerHeight }}>
-                <PageHeader breadCrumbs={breadCrumbs} handleBreadCrumbsClick={() => { }} pageTitle={EPageTitles.COURSE} >
+                <PageHeader breadCrumbs={breadCrumbs} handleBreadCrumbsClick={() => { }} pageTitle={EPageTitles.TASKS} >
                     <Grid item xs={12}>
-                        <CourseList
+                        {/* <TaskList
                             coursesList={coursesList}
                             selectedCourseId={selectedCourseId}
                             handleSelectCourseId={handleSelectCourseId}
-                        />
+                        /> */}
                     </Grid>
                 </PageHeader>
             </Grid>
             <Grid item xs={12} lg={4} sx={{ minHeight: window.innerHeight }}>
-                {/* Task Details */}
+                <TaskDetails/>
             </Grid>
         </Grid>
     )

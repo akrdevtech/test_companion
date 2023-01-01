@@ -8,6 +8,7 @@ import { StudentStore } from './pages/StudentsManger/context/Store';
 import CourseManager from './pages/CourseManager';
 import { CourseStore } from './pages/CourseManager/context/Store';
 import TasksManager from './pages/TasksManager';
+import TasksEditor from './pages/TaskEditor';
 
 const theme = createTheme({
   typography: {
@@ -57,6 +58,7 @@ function App() {
                     <Route path="/students" element={<StudentManager />} />
                     <Route path="/courses" element={<CourseManager />} />
                     <Route path="/tasks" element={<TasksManager />} />
+                    <Route path="/tasks/editor" element={<TasksEditor />} />
                   </Routes>
                 </CourseStore>
               </StudentStore>
